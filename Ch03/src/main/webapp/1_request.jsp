@@ -8,6 +8,19 @@
 			날짜: 2022/10/04
 			이름: 이원정
 			내용: JSP Request 내장객체 실습하기  
+			
+			request 내장 객체
+			- 클라이언트 요청 정보를 갖는 객체
+			- 클라이언트의 전송 데이터(parameter)를 수신하는 기능 제공
+			
+			Get Method (데이터 전송 방식)
+			- 기본 데이터 전송 방식
+			- 서버에 정보를 요청하는 방식
+			- 전송 데이터가 주소에 노출
+			
+			Post Method (데이터 전송 방식)
+			- 서버에 데이터를 전송하면서 처리를 요청하는 전송 방식
+			- 전송 데이터가 요청 body에 삽입되어 전송, 데이터 노출X
 		-->
 			
 	</head>
@@ -81,6 +94,20 @@
 				</tr>
 			</table>
 		</form>
+		
+		<h4>클라이언트 사용자 정보확인</h4>
+		<p>
+			헤더정보: <%= request.getHeader("User-Agent") %><br/>
+			프로토콜: <%= request.getProtocol() %><br/>
+			서버이름: <%= request.getServerName() %><br/>
+			요청주소: <%= request.getRequestURL() %><br/>
+			요청경로: <%= request.getRequestURI() %><br/>
+			클라이언트 IP 주소: <%= request.getRemoteAddr() %><br/>
+		</p>
+		
+		
+		
+		
 		
 		
 	</body>
