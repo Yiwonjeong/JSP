@@ -25,6 +25,8 @@
 			sb.setStdAddress(rs.getString(5));
 		}
 		
+		rs.close();
+		stmt.close();
 		conn.close();
 		
  	}catch(Exception e){

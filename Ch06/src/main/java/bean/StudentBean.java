@@ -39,6 +39,7 @@ public class StudentBean {
 	public void setStdAddress(String stdAddress) {
 		this.stdAddress = stdAddress;
 	}
+	
 }
 
 

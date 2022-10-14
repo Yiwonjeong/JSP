@@ -11,8 +11,6 @@
 
 	List<StudentBean> students = null;
 	
-	// 데이터베이스 작업
-	
 	try{
 		Connection conn = DB.getInstance().getConnection();
 		Statement stmt = conn.createStatement();
@@ -33,6 +31,7 @@
 		rs.close();
 		stmt.close();
 		conn.close();
+		
 	}catch(Exception e){
 		e.printStackTrace();
 	}
