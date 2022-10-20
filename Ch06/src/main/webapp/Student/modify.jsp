@@ -14,7 +14,7 @@
  	try{
  		Connection conn = DB.getInstance().getConnection();
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM `student` WHERE `stdNo`= ' "+stdNo+" '");
+		ResultSet rs = stmt.executeQuery("SELECT * FROM `student` WHERE `stdNo`= '"+stdNo+"'");
 		
 		if(rs.next()){
 			sb = new StudentBean();
@@ -48,15 +48,15 @@
 			<table border="1">
 				<tr>
 					<td>학번</td>
-					<td><input type="text" name="stdNo" readonly="readonly" value="<%= sb.getStdNo()%>"></td>
+					<td><input type="text" name="stdNo" readonly value="<%= sb.getStdNo() %>"/></td>
 				</tr>
 				<tr>
 					<td>이름</td>
-					<td><input type="text" name="stdName" value="<%= sb.getStdName()%>"></td>
+					<td><input type="text" name="stdName" value="<%= sb.getStdName() %>"/></td>
 				</tr>
 				<tr>
 					<td>휴대폰</td>
-					<td><input type="text" name="stdHp" value="<%= sb.getStdHp()%>"></td>
+					<td><input type="text" name="stdHp" value="<%= sb.getStdHp()%>"/></td>
 				</tr>
 				<tr>
 					<td>학년</td>
@@ -70,7 +70,7 @@
 				</tr>
 				<tr>
 					<td>주소</td>
-					<td><input type="text" name="stdAddress" value="<%= sb.getStdAddress()%>"></td>
+					<td><input type="text" name="stdAddress" value="<%= sb.getStdAddress()%>"/></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right">

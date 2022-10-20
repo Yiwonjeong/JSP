@@ -5,9 +5,6 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="javax.sql.DataSource"%>
-
-
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	List<User5Bean> users = new ArrayList<>();
@@ -73,8 +70,8 @@
 				<td><%= ub.getAddr() %></td>
 				<td><%= ub.getHp() %></td>
 				<td>
-					<a href="./modify.jsp?=uid=<%= ub.getUid() %>">수정</a>
-					<a href="./delete.jsp?=uid=<%= ub.getUid() %>">삭제</a>
+					<a href="./modify.jsp?uid=<%= ub.getUid() %>">수정</a>
+					<a href="./delete.jsp?uid=<%= ub.getUid() %>">삭제</a>
 				</td>
 			</tr>
 			<% } %>

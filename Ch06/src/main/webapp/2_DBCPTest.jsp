@@ -16,6 +16,7 @@
 	</head>
 	<body>
 		<h3>DBCP 실습</h3>
-	 	<a href="./user5.list.jsp">user5 CRUD 실습</a>
+	 	<a href="./user5/list.jsp">user5 CRUD 실습</a>
+	 	<a href="./patient/list.jsp">patient CRUD 실습</a>
 	</body>
 </html>
