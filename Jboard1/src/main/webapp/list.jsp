@@ -3,50 +3,23 @@
 <main id="board">
     <section class="list">
         <table border="0">
-            <caption>글 목록</caption>
+            <caption>글목록</caption>
             <tr>
                 <th>번호</th>
                 <th>제목</th>
                 <th>글쓴이</th>
                 <th>날짜</th>
                 <th>조회</th>
-            </tr>
+            </tr>                    
             <tr>
                 <td>1</td>
-                <td><a href="/Jboard1/view.jsp">테스트 제목입니다. [3] </a> </td>
-                <td>길동이</td>
-                <td>20-05-12</td>
-                <td>12</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>테스트 제목입니다. [3] </td>
-                <td>길동이</td>
-                <td>20-05-12</td>
-                <td>12</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>테스트 제목입니다. [3] </td>
-                <td>길동이</td>
-                <td>20-05-12</td>
-                <td>12</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>테스트 제목입니다. [3] </td>
-                <td>길동이</td>
-                <td>20-05-12</td>
-                <td>12</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>테스트 제목입니다. [3] </td>
+                <td><a href="/Jboard1/view.jsp">테스트 제목입니다.[3]</a></td>
                 <td>길동이</td>
                 <td>20-05-12</td>
                 <td>12</td>
             </tr>
         </table>
+
         <div class="page">
             <a href="#" class="prev">이전</a>
             <a href="#" class="num current">1</a>
@@ -54,7 +27,9 @@
             <a href="#" class="num">3</a>
             <a href="#" class="next">다음</a>
         </div>
-        <a href="/Jboard1/write.html" class="btn btnWrite">글쓰기</a>
+
+        <a href="/Jboard1/write.jsp" class="btn btnWrite">글쓰기</a>
+        
     </section>
 </main>
-<%@ include file="./_footer.jsp" %>
+<%@ include file="./_footer.jsp" %>   
