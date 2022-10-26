@@ -1,22 +1,34 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
-<%@page import="kr.co.shop.db.DBCPshop"%>
+<%@page import="kr.co.shop.db.DBCP"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="kr.co.shop.bean.ProBean"%>
+<%@page import="kr.co.shop.bean.ProductBean"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- 스크립트릿 (프로그램 코드 영역) -->
 <%
-	List<ProBean> products = new ArrayList<>();
+	//제품 정보 가져오기
+	List<ProductBean> products = null;
 
+	//데이터베이스 작업
 	try{
 		
-		Connection conn = DBCPshop.getConnection();
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("select * from `Product`");
+		// DBCP를 이용해 DB 접속
+		Connection conn = DBCP.getConnection();
 		
+		// SQL 실행 객체 생성
+		Statement stmt = conn.createStatement();
+		
+		// SQL 실행
+		ResultSet rs = stmt.executeQuery("SELECT * FROM `Product`");
+		
+		// 제품 저장 List 객체 생성
+		products = new ArrayList<>();
+		
+		// SQL 결과 처리
 		while(rs.next()){
-			ProBean pb = new ProBean();
+			ProductBean pb = new ProductBean();
 			pb.setProdNo(rs.getInt(1));
 			pb.setProdName(rs.getString(2));
 			pb.setStock(rs.getInt(3));
@@ -26,6 +38,7 @@
 			products.add(pb);
 		}
 		
+		// 연결 해제
 		rs.close();
 		stmt.close();
 		conn.close();
@@ -33,68 +46,73 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}
+
 %>
 
-
-<!-- 주문 버튼 클릭하여 JSON 데이터 요청 -->
+<!-- 뷰 영역 -->
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>Shop::product</title>
+		<!-- product 주문하기 기능 -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 		<script>
 			$(function(){
-				$('.btnOrder').click(function(){
+				
+				$(document).on('click', '.btnOrder', function(e) {
 					
-					$('section').empty();
-					let orderNo = $(this).val();
+					e.preventDefault();
+					
+					let prodNo = $(this).val();
+					$('section').empty(); //'주문하기' section 중복 출력 방지
+					
 					
 					let table = "<table border='1'>";
-						table += "<tr>";
-						table += "<td>상품번호</td>";
-						table += "<td><input type='text' name='orderNo' value='"+orderNo+"'/></td>";
-						table += "</tr>";
-						table += "<tr>";
-						table += "<td>수량</td>";
-						table += "<td><input type='text' name='orderCount'/></td>";
-						table += "</tr>";
-						table += "<td>주문자</td>";
-						table += "<td><input type='text' name='orderId'/></td>";
-						table += "</tr>";
-						table += "<td colspan='2' align='right'><button id='btnProductOrder'>주문하기</button></td>";
-						table += "</tr>";
-						table += "</table>";
-		
+					table += "<tr>";
+					table += "<td>상품번호</td>";
+					table += "<td><input type='text' name='prodNo' value='"+prodNo+"'/></td>";
+					table += "</tr>";
+					table += "<tr>";
+					table += "<td>수량</td>";
+					table += "<td><input type='text' name='orderCount'/></td>";
+					table += "</tr>";
+					table += "<td>주문자</td>";
+					table += "<td><input type='text' name='custId'/></td>";
+					table += "</tr>";
+					table += "<td colspan='2' align='right'><input type='submit' value='주문하기'></td>";
+					table += "</tr>";
+					table += "</table>";
 					
 					$('section').append("<h4>주문하기</h4>");
 					$('section').append(table);
-				
+					
 				});
+				
 			});
 			
-			/* 주문하기 폼 입력 후 '주문하기'버튼 클릭 시*/
 			$(function(){
-				$(document).on('click', '#btnProductOrder', function (e) {
+				$(document).on('click', 'input[type=submit]', function(e) {
+					// 원래 이벤트 기능 제거
 					e.preventDefault();
 					
 					// 입력한 데이터 가져오기
-					let orderNo = $('input[name=orderNo]').val();
+					let orderNo = $('input[name=prodNo]').val();
 					let orderCount = $('input[name=orderCount]').val();
-					let orderId = $('input[name=orderId]').val();
+					let orderId = $('input[name=custId]').val();
 					
-					// 가져온 데이터(JSON) 생성하기
+					// JSON 형태로 변환
 					let jsonData = {
-							"orderNo":orderNo,
+							"prodNo":orderNo,
 							"orderCount":orderCount,
-							"orderId":orderId
-					};
+							"custId":orderId
+					}
 					
 					console.log(jsonData);
 					
-					// 데이터 전송
+					// AJAX을 이용해 orderProc으로 JSON 데이터 전송
 					$.ajax({
-						url: './insert.jsp',
+						url: './orderProc.jsp',
 						method: 'post',
 						data: jsonData,
 						dataTye: 'json',
@@ -106,17 +124,16 @@
 							}
 						}
 					});
+					
+					
 				});
 			});
-			
-			
 		</script>
 		
-
-	
 	</head>
 	<body>
 		<h3>상품 목록</h3>
+		
 		<a href="./customer.jsp">고객목록</a>
 		<a href="./order.jsp">주문목록</a>
 		<a href="./product.jsp">상품목록</a>
@@ -128,9 +145,9 @@
 				<th>재고량</th>
 				<th>가격</th>
 				<th>제조사</th>
-				<th>주문</th>			
+				<th>주문</th>
 			</tr>
-			<% for (ProBean pb : products) { %>
+			<% for (ProductBean pb : products) { %>
 			<tr>
 				<td><%= pb.getProdNo() %></td>
 				<td><%= pb.getProdName() %></td>
@@ -138,7 +155,7 @@
 				<td><%= pb.getPrice() %></td>
 				<td><%= pb.getCompany() %></td>
 				<td>
-					<button class="btnOrder" value="<%= pb.getProdNo() %>">주문</button>
+					<button class="btnOrder">주문</button>
 				</td>
 			</tr>
 			<% } %>

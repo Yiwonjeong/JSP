@@ -17,13 +17,13 @@
 </script>
 	<main id="board">
 	    <section class="write">
-	        <form action="/Jboard1/proc/writeProc.jsp" method="post" onsubmit="return vaildateForm(this)">
+	        <form action="/Jboard1/proc/writeProc.jsp" method="post" enctype="multipart/form-data" onsubmit="return vaildateForm(this)">
 	        	<input type="hidden"  name="uid" value="<%= ub.getUid() %>">
 	            <table border="0">
 	             <caption>글쓰기</caption>
 	             <tr>
 	                 <th>제목</th>
-	                 <td><input type="text" name="title" placeholder="제목을 입력하세요." autofocus></td>
+	                 <td><input type="text" name="title" placeholder="제목을 입력하세요." autofocus/></td>
 	             </tr>
 	             <tr>
 	                 <th>내용</th>
@@ -34,13 +34,13 @@
 	             <tr>
 	                 <th>첨부</th>
 	                 <td>
-	                     <input type="file" name="file">
+	                     <input type="file" name="fname"/>
 	                 </td>
 	             </tr>
 	            </table>
 	            <div>
 	                <a href="/Jboard1/list.jsp" class="btn btnCalcel">취소</a>
-	                <input type="submit" value="작성완료" class="btn btnComplete">
+	                <input type="submit" value="작성완료" class="btn btnComplete"/>
 	            </div>
 	        </form>
 	    </section>

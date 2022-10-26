@@ -1,21 +1,36 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
-<%@page import="kr.co.shop.db.DBCPshop"%>
+<%@page import="kr.co.shop.db.DBCP"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="kr.co.shop.bean.OrderBean"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- 스크립트릿 (프로그램 코드 영역) -->
 <%
-	List<OrderBean> orders = new ArrayList<>();
+	// 주문 정보 가져오기
+	List<OrderBean> orders = null;
 
+	// 데이터베이스 작업
 	try{
 		
-		Connection conn = DBCPshop.getConnection();
+		// DBCP를 이용해 DB 접속
+		Connection conn = DBCP.getConnection();
+		
+		// SQL 실행 객체 생성
 		Statement stmt = conn.createStatement();
-		String sql = "(select b.`orderNo`, a.`name`, c.`prodName`, b.`orderCount`, b.`orderDate` from `Customer` as a join `Order` as b on a.`custId` = b.`orderId` join `Product` as c on b.`orderProduct` = c.`prodNo`)";
+		String sql = "SELECT o.orderNo, c.name, p.prodName, o.orderCount, o.orderDate "
+				   + " FROM `order` as o"
+				   + " join `customer` as c on o.orderid = c.custid"
+				   + " join `product` as p on o.orderProduct = p.prodNo";
+		
+		// SQL 실행
 		ResultSet rs = stmt.executeQuery(sql);
 		
+		// 주문 저장 List 객체 생성
+		orders = new ArrayList<>();
+		
+		// SQL 결과 처리
 		while(rs.next()){
 			OrderBean ob = new OrderBean();
 			ob.setOrderNo(rs.getInt(1));
@@ -27,6 +42,7 @@
 			orders.add(ob);
 		}
 		
+		// 연결 해제
 		rs.close();
 		stmt.close();
 		conn.close();
@@ -36,6 +52,7 @@
 	}
 %>
 
+<!-- 뷰 영역 -->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -43,7 +60,8 @@
 		<title>Shop::order</title>
 	</head>
 	<body>
-		<h3>주문목록</h3>
+		<h3>주문 목록</h3>
+		
 		<a href="./customer.jsp">고객목록</a>
 		<a href="./order.jsp">주문목록</a>
 		<a href="./product.jsp">상품목록</a>
@@ -56,7 +74,7 @@
 				<th>주문수량</th>
 				<th>주문일</th>
 			</tr>
-			<% for (OrderBean ob : orders) { %>
+			<% for(OrderBean ob : orders){ %>
 			<tr>
 				<td><%= ob.getOrderNo() %></td>
 				<td><%= ob.getName() %></td>

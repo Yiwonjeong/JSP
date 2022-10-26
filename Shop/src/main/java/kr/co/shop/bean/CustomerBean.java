@@ -1,6 +1,6 @@
 package kr.co.shop.bean;
 
-public class CusBean {
+public class CustomerBean {
 	private String custId;
 	private String name;
 	private String hp;

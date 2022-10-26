@@ -1,11 +1,12 @@
 package kr.co.shop.bean;
 
-public class ProBean {
+public class ProductBean {
 	private int prodNo;
 	private String prodName;
 	private int stock;
 	private int price;
 	private String company;
+	
 	public int getProdNo() {
 		return prodNo;
 	}
@@ -36,6 +37,4 @@ public class ProBean {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-	
-	
 }
