@@ -31,5 +31,11 @@
 	- sub2. Session
 
 ## Ch06. JSP 데이터베이스
-	- sub1. 
+	- sub1. JDBC Test
+	- sub2. DBCP Test
+	- sub3. JSON
+	- sub4. XML
+
+## Jboard1 
+	- 게시판 만들기 프로젝트 
 	
