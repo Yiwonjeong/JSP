@@ -3,7 +3,7 @@ package kr.co.jboard1.db;
 public class Sql {
 
 	// user
-	public static final String INSERT_USER = "insert into `board_user` set"
+	public static final String INSERT_USER = "insert into `board_user` set "
 											+ "`uid`=?,"
 											+ "`pass`=SHA2(?,256),"
 											+ "`name`=?,"
@@ -37,6 +37,16 @@ public class Sql {
 			 								+ "`oriName`=?";
 	
 	public static final String SELECT_MAX_NO = "SELECT MAX(`no`) FROM `board_article`";
-		
+	public static final String SELECT_COUNT_TOTAL = "SELECT COUNT(`no`) FROM `board_article`";
+	
+	public static final String SELECT_ARTICLES = "select a.*, b.nick from `board_article` as a "
+											   + "join `board_user` as b "
+											   + "on a.uid = b.uid "
+											   + "order by `no` desc "
+											   + "limit ?, 10";
+	
+	
+	
+//	+ 쓸 때는 앞에 쿼리문과 붙지 않게 띄어쓰기 주의 
 	
 }
