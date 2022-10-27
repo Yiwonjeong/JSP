@@ -2,7 +2,6 @@ package com.circle.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +20,11 @@ public class NoticeReg extends HttpServlet {
 		
 		// 받는 Content Type 지정 (html 문서, UTF-8로 읽어라!)
 		response.setContentType("text/html; charset=UTF-8");
+		
+		// 한글 깨짐 해결: 입력받는 값을 utf-8로 읽어라
+		// request.setCharacterEncoding("UTF-8");
+		
+		
 		
 		PrintWriter out = response.getWriter();
 		
