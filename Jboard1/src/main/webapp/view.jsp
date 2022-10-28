@@ -1,3 +1,4 @@
+<%@page import="kr.co.jboard1.dao.ArticleDAO"%>
 <%@page import="kr.co.jboard1.bean.ArticleBean"%>
 <%@page import="kr.co.jboard1.db.Sql"%>
 <%@page import="java.sql.ResultSet"%>
@@ -8,46 +9,15 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	String no = request.getParameter("no");
+	String pg = request.getParameter("pg");
 	
-	ArticleBean article = null;
+	ArticleDAO dao = ArticleDAO.getInstance();
 	
-	try{
-		
-		Connection conn = DBCP.getConnection();
-		PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_ARTICLE);
-		psmt.setString(1, no);
-		ResultSet rs = psmt.executeQuery();
-		
-		// if문은 List 불필요
-		if(rs.next()){
-			article = new ArticleBean();
-			article.setNo(rs.getInt(1));
-			article.setParent(rs.getInt(2));
-			article.setComment(rs.getInt(3));
-			article.setCate(rs.getString(4));
-			article.setTitle(rs.getString(5));
-			article.setContent(rs.getString(6));
-			article.setFile(rs.getInt(7));
-			article.setHit(rs.getInt(8));
-			article.setUid(rs.getString(9));
-			article.setRegip(rs.getString(10));
-			article.setRdate(rs.getString(11));
-			article.setFno(rs.getInt(12));
-			article.setPno(rs.getInt(13));
-			article.setNewName(rs.getString(14));
-			article.setOriName(rs.getString(15));
-			article.setDownload(rs.getInt(16));
-			
-		}
-		
-		rs.close();
-		psmt.close();
-		conn.close();
-		
-		
-	}catch(Exception e){
-		e.printStackTrace();
-	}
+	// 조회수 +1
+	dao.updateArticleHit(no);
+	
+	// 글 가져오기
+	ArticleBean article = dao.selectArticle(no);
 	
 %>
 <%@ include file="_header.jsp" %>
@@ -63,7 +33,7 @@
 	            <tr>
 	                <th>첨부파일</th>
 	                <td>
-	                    <a href="#"><%= article.getOriName() %></a>&nbsp;<span>(<%= article.getDownload() %>회</span> 다운로드)
+	                    <a href="/Jboard1/proc/download.jsp?parent=<%= article.getNo() %>"><%= article.getOriName() %></a>&nbsp;<span>(<%= article.getDownload() %>회</span> 다운로드)
 	                </td>
 	            </tr>
 	            <% } %>
@@ -78,7 +48,7 @@
 	        <div>
 	            <a href="#" class="btn btnRemove">삭제</a>
 	            <a href="/Jboard1/modify.jsp" class="btn btnModify">수정</a>
-	            <a href="/Jboard1/list.jsp" class="btn btnList">목록</a>
+	            <a href="/Jboard1/list.jsp?pg=<%= pg %>" class="btn btnList">목록</a>
 	        </div>
 	
 	        <!-- 댓글 목록 -->

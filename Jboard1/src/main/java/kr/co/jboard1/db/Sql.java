@@ -50,8 +50,11 @@ public class Sql {
 											  + "left join `board_file` as b "
 											  + "on a.`no` = b.`parent` "
 											  + "where `no`=?";
+	public static final String SELECT_FILE = "select * from `board_file` where `parent`=?";
 	
+	public static final String UPDATE_ARTICLE_HIT ="update `board_article` set `hit` = `hit` + 1 where `no`=?";
 	
+	public static final String UPDATE_FILE_DOWNLOAD ="update `board_file` set `download` = `download` + 1 where `fno`=?";
 	
 //	+ 쓸 때는 앞에 쿼리문과 붙지 않게 띄어쓰기 주의 
 	

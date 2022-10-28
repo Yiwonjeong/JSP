@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>java2_board</string>
+			<key>host</key>
+			<string>127.0.0.1</string>
+			<key>kcid</key>
+			<string>-3219984741983591541</string>
+			<key>name</key>
+			<string>java2_board DB</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>java2_board</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8mb4</string>
+			<key>contentFilterV2</key>
+			<dict>
+				<key>children</key>
+				<array/>
+				<key>filterClass</key>
+				<string>groupNode</string>
+				<key>isConjunction</key>
+				<true/>
+			</dict>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0
+			b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRk
+			YXRhgAGtCwwZGhscHSEoLDA0OFUkbnVsbNMNDg8QFBhXTlMua2V5
+			c1pOUy5vYmplY3RzViRjbGFzc6MREhOAAoADgASjFRYXgAWABoAI
+			gAxUdHlwZVRyb3dzVGtleXNfECZTZWxlY3Rpb25EZXRhaWxUeXBl
+			UHJpbWFyeUtleWVkRGV0YWlsc9MNDg8eHyCgoIAH0iIjJCVaJGNs
+			YXNzbmFtZVgkY2xhc3Nlc18QE05TTXV0YWJsZURpY3Rpb25hcnmj
+			JCYnXE5TRGljdGlvbmFyeVhOU09iamVjdNIODykroSqACYAL0g8t
+			Li9ZTlMuc3RyaW5ngApSbm/SIiMxMl8QD05TTXV0YWJsZVN0cmlu
+			Z6MxMydYTlNTdHJpbmfSIiM1Nl5OU011dGFibGVBcnJheaM1NydX
+			TlNBcnJhedIiIyY5oiYnAAgAEQAaACQAKQAyADcASQBMAFEAUwBh
+			AGcAbgB2AIEAiACMAI4AkACSAJYAmACaAJwAngCjAKgArQDWAN0A
+			3gDfAOEA5gDxAPoBEAEUASEBKgEvATEBMwE1AToBRAFGAUkBTgFg
+			AWQBbQFyAYEBhQGNAZIAAAAAAAACAQAAAAAAAAA6AAAAAAAAAAAA
+			AAAAAAABlQ==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1067, 364}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>select a.*, b.fno, b.parent as pno, b.newName, b.oriName, b.download
+from `board_article` as a
+left join `board_file` as b
+on a.`no` = b.`parent`
+where `no`=1;
+
+update `board_article` set `hit` = `hit` + 1 where `no`=?;
+
+insert into `board_article` (`title`, `content`, `uid`, `regip`, `rdate`)
+select `title`, `content`, `uid`, `regip`, `rdate` from `board_article`;</string>
+			<key>table</key>
+			<string>board_article</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string>insert into `board_article` (`title`, `content`, `uid`, `regip`, `rdate`)
+select `title`, `content`, `uid`, `regip`, `rdate` from `board_article`</string>
+		<string>select * from `board_article` as a
+left join `board_file` as b
+on a.`no` = b.`parent`
+where `no`=1</string>
+		<string>select * from `board_article` as a
+left join `board_file` as b
+on a.`no` = b.`parent`
+where `no`=2</string>
+		<string>select * from `board_article` as a
+join `board_file` as b
+on a.`no` = b.`parent`
+where `no`=1</string>
+		<string>select * from `board_article` as a
+join `board_file` as b
+on a.`no` = b.`parent`</string>
+		<string>select count(`no`) from `board_article`</string>
+		<string>select a.*, b.nick from `board_article` as a
+join `board_user` as b
+on a.uid = b.uid
+order by `no` desc
+limit 30,10</string>
+		<string>select a.*, b.nick from `board_article` as a
+join `board_user` as b
+on a.uid = b.uid
+order by `no` desc
+limit 0,10</string>
+		<string>select a.*, b.nick from `board_article` as a
+join `board_user` as b
+on a.uid = b.uid</string>
+		<string>select * from `board_article` as a
+join `board_user` as b
+on a.uid = b.uid</string>
+		<string>select * from `board_artilc` as a
+join `board_user` as b
+on a.uid = b.uid</string>
+		<string>select b.`orderNo`, a.`name`, c.`prodName`, b.`orderCount`, b.`orderDate` from `Customer` as a
+join `Order` as b on a.`custId` = b.`orderId`
+join `Product` as c on b.`orderProduct` = c.`prodNo`</string>
+		<string>select
+b.`orderNo`,
+a.`name`,
+c.`prodName`,
+b.`orderCount`,
+b.`orderDate`
+from `Customer` as a
+join `Order` as b on a.`custId` = b.`orderId`
+join `Product` as c on b.`orderProduct` = c.`prodNo`</string>
+		<string>select
+b.`orderNo` as `주문번호`,
+a.`name` as `주문자`,
+c.`prodName` as `주문상품`,
+b.`orderCount` as `주문수량`,
+b.`orderDate` as `주문일`
+from `Customer` as a
+join `Order` as b on a.`custId` = b.`orderId`
+join `Product` as c on b.`orderProduct` = c.`prodNo`</string>
+		<string>b.`orderNo` as `주문번호`,
+a.`name` as `주문자`,
+c.`prodName` as `주문상품`,
+b.`orderCount` as `주문수량`,
+b.`orderDate` as `주문일`</string>
+		<string>select
+*
+from `Customer` as a
+join `Order` as b on a.`custId` = b.`orderId`
+join `Product` as c on b.`orderProduct` = c.`prodNo`</string>
+		<string>select
+b.`orderNo` as `주문번호`,
+a.`name` as `주문자`,
+b.`orderCount` as `주문수량`,
+b.`orderDate` as `주문일`
+from `Customer` as a
+join `Order` as b on a.`custId` = b.`orderId`</string>
+		<string>select
+b.`orderNo` as `주문번호`,
+a.`name` as `주문자`,
+c.`prodName` as `주문상품`,
+b.`orderCount` as `주문수량`,
+b.`orderDate` as `주문일`
+from `Customer` as a
+join `Order` as b on a.`custId` = b.`orderId`
+join `Product` as c on b.`orderProduct` = c.`prodName`</string>
+		<string>select
+b.`orderNo` as `주문번호`,
+a.`name` as `주문자`,
+c.`prodName` as `주문상품`,
+b.`orderCount` as `주문수량`,
+b.`orderDate` as `주문일`
+from `Customer` as a
+join `Order` as b on a.`custId` = b.`orderId`</string>
+		<string>SELECT SHA2('1234',256)</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>8.0.30</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
