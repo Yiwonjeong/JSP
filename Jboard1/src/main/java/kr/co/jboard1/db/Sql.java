@@ -45,6 +45,12 @@ public class Sql {
 											   + "order by `no` desc "
 											   + "limit ?, 10";
 	
+	public static final String SELECT_ARTICLE = "select a.*, b.fno, b.parent as pno, b.newName, b.oriName, b.download "
+											  + "from `board_article` as a "
+											  + "left join `board_file` as b "
+											  + "on a.`no` = b.`parent` "
+											  + "where `no`=?";
+	
 	
 	
 //	+ 쓸 때는 앞에 쿼리문과 붙지 않게 띄어쓰기 주의 
