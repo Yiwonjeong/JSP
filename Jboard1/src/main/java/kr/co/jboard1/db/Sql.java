@@ -36,6 +36,8 @@ public class Sql {
 			 								+ "`newName`=?,"
 			 								+ "`oriName`=?";
 	
+
+	
 	public static final String INSERT_COMMENT = "insert into `board_article` set "
 												 + "`parent`=?, "
 												 + "`content`=?, "
@@ -44,11 +46,12 @@ public class Sql {
 												 + "`rdate`=NOW()";
 	
 	public static final String SELECT_MAX_NO = "SELECT MAX(`no`) FROM `board_article`";
-	public static final String SELECT_COUNT_TOTAL = "SELECT COUNT(`no`) FROM `board_article`";
+	public static final String SELECT_COUNT_TOTAL = "SELECT COUNT(`no`) FROM `board_article` where `parent`=0";
 	
 	public static final String SELECT_ARTICLES = "select a.*, b.nick from `board_article` as a "
 											   + "join `board_user` as b "
 											   + "on a.uid = b.uid "
+											   + "where `parent`=0 "
 											   + "order by `no` desc "
 											   + "limit ?, 10";
 	
@@ -58,6 +61,11 @@ public class Sql {
 											  + "on a.`no` = b.`parent` "
 											  + "where `no`=?";
 	public static final String SELECT_FILE = "select * from `board_file` where `parent`=?";
+	
+	public static final String SELECT_COMMENTS = "select a.*, b.`nick` from `board_article` as a "
+											   + "join `board_user` as b "
+											   + "on a.uid = b.uid "
+											   + "where `parent`=? order by `no` asc";
 	
 	public static final String UPDATE_ARTICLE_HIT ="update `board_article` set `hit` = `hit` + 1 where `no`=?";
 	

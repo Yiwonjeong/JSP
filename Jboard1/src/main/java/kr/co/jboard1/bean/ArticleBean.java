@@ -81,6 +81,13 @@ public class ArticleBean {
 	public void setParent(int parent) {
 		this.parent = parent;
 	}
+	
+	// overroad
+	public void setParent(String parent) {
+		this.parent = Integer.parseInt(parent);
+	}
+	
+	
 	public int getComment() {
 		return comment;
 	}
