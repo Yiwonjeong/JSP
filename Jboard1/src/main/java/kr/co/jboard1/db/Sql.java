@@ -82,6 +82,8 @@ public class Sql {
 											  + "`rdate`= NOW() "
 											  + "where `no`=?";
 	
+	public static final String DELETE_COMMENT  = "delete from `board_article` where `no`=?";
+	
 	
 //	+ 쓸 때는 앞에 쿼리문과 붙지 않게 띄어쓰기 주의 
 	
