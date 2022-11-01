@@ -62,15 +62,25 @@ public class Sql {
 											  + "where `no`=?";
 	public static final String SELECT_FILE = "select * from `board_file` where `parent`=?";
 	
-	public static final String SELECT_COMMENTS = "select a.*, b.`nick` from `board_article` as a "
-											   + "join `board_user` as b "
-											   + "on a.uid = b.uid "
-											   + "where `parent`=? order by `no` asc";
+	public static final String SELECT_COMMENTS = "SELECT a.*, b.`nick` FROM `board_article` AS a "
+												+ "JOIN `board_user` AS b "
+												+ "ON a.uid = b.uid "
+												+ "WHERE `parent`=? ORDER BY `no` ASC";
+	
+	public static final String SELECT_COMMENT_LATEST = "SELECT a.*, b.nick from `board_article` AS a "
+														+ "JOIN `board_user` AS b USING (`uid`) "
+														+ "WHERE `parent`!=0 ORDER BY `no` DESC LIMIT 1"; 
+	
+	  
 	
 	public static final String UPDATE_ARTICLE_HIT ="update `board_article` set `hit` = `hit` + 1 where `no`=?";
 	
 	public static final String UPDATE_FILE_DOWNLOAD ="update `board_file` set `download` = `download` + 1 where `fno`=?";
 	
+	public static final String UPDATE_COMMENT = "update `board_article` set "
+											  + "`content`=?, "
+											  + "`rdate`= NOW() "
+											  + "where `no`=?";
 	
 	
 //	+ 쓸 때는 앞에 쿼리문과 붙지 않게 띄어쓰기 주의 
