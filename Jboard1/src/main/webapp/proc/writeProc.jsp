@@ -22,58 +22,54 @@
 <%
 	request.setCharacterEncoding("utf-8");
 
-	// multipart 폼 데이터 수신  
-	//	(라이브러리 다운 필요 - Maven 저장소 - cos 검색 다운)
-	int maxSize = 1024 * 1024 *10; //10MB
-	String savePath = application.getRealPath("/file"); // 실제 경로 찾기
-	MultipartRequest mr = new MultipartRequest(request, savePath, maxSize, "utf-8", new DefaultFileRenamePolicy());
+	// multipart 폼 데이터 수신 (라이브러리 - Maven - cos)
+	int maxSize = 1024 * 1024 * 10; // 10MB
+	DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();
+	String savePath = application.getRealPath("/file");
+	MultipartRequest mr = new MultipartRequest(request, savePath, maxSize, "utf-8", policy);
 	
 	String title = mr.getParameter("title");
 	String content = mr.getParameter("editorTxt");
 	String uid = mr.getParameter("uid");
 	String fname = mr.getFilesystemName("fname");
-	String img = mr.getParameter("img"); // 게시글에 게시된 이미지 주소값
+	String img = mr.getParameter("img"); // 게시된 이미지 주소값
 	String regip = request.getRemoteAddr();
 	
-	//System.out.println("fname: " +fname);
-	
-	//int result = 0;
-	
-	ArticleBean article = new ArticleBean();
-	article.setTitle(title);
-	article.setContent(content);
-	article.setUid(uid);
-	article.setFname(fname);
-	article.setRegip(regip);
+	ArticleBean ab = new ArticleBean();
+	ab.setTitle(title);
+	ab.setContent(content);
+	ab.setUid(uid);
+	ab.setFname(fname);
+	ab.setRegip(regip);
 	
 	ArticleDAO dao = ArticleDAO.getInstance();
 	
 	// 글 등록
-	int parent = dao.insertArticle(article);
+	int parent = dao.insertArticle(ab);
 	
-	/****** 1. 파일 첨부 ******/
-	// 파일 첨부했으면 (파일을 첨부하지 않으면 fname: null)
+	
+	//파일 첨부 시
 	if(fname != null){
 		
-		// 파일명 수정 (파일이 저장된 상태)
-		int i = fname.lastIndexOf("."); //확장자 앞 . 의 인덱스 구하기
-		String ext = fname.substring(i); // 확장자 더하기 (ex.txt)
+		// 파일명 수정
+		int i = fname.lastIndexOf("."); // ex) 수업내용.txt에서 확장자 앞의 .의 인덱스 번호를 가져온다.
+		String ext = fname.substring(i); // ex) .txt를 문자열로 저장한다.
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss_"); //날짜 서식 
-		String now = sdf. format(new Date());	// new Date()로 오늘 날짜의 객체를 생성후 포맷 형식에 맞춰서 문자열로 저장
-		String newName = now + uid + ext; //20221026160517_circle.txt
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss_"); // yyyyMMddHHmmss_ 형식의 포맷
+		String now = sdf.format(new Date()); // new Date()로 오늘 날짜의 객체를 생성후 포맷 형식에 맞춰서 문자열로 저장
+		String newName = now + uid + ext; // ex)20221026100417_syj980520.txt
+	
+		File f1 = new File(savePath + "/" + fname); // file 디렉터리안에 존재하는 객체
+		File f2 = new File(savePath + "/" + newName); // 가상의 파일 객체
 		
-		File f1 = new File(savePath+"/"+fname); // 저장 경로에 있는 파일 객체 생성
-		File f2 = new File(savePath+"/"+newName); // 저장 경로에 있는 파일 새로운 이름 객체 생성
-		
-		f1.renameTo(f2); // f1을 f2로 파일명 수정
+		f1.renameTo(f2); // f1의 파일 이름을 f2의 가상객체의 파일이름으로 변경한다.
 		
 		// 파일 테이블 Insert
 		dao.insertFile(parent, newName, fname);
-		
+			
 	}
 	
-	/****** 2. 이미지 파일 삽입 ******/
+	//이미지 파일 삽입
 	String realPath = application.getRealPath("/");
 	File files = new File(realPath, "smartEditor/temp"); // 임시 저장소 디렉터리 주소
 	

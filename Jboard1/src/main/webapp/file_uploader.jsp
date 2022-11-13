@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
 <%@page import="java.io.FileOutputStream"%>
 <%@page import="java.io.OutputStream"%>
 <%@page import="java.io.InputStream"%>
@@ -9,19 +12,13 @@
 <%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
 <%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
  
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<%--------------------------------------------------------------------------------
-	* 화면명 : Smart Editor 2.8 에디터 - 싱글 파일 업로드 처리
---------------------------------------------------------------------------------%>
 <%
-	// 로컬 경로에 파일 저장하기
-	String return1 = "";
-	String return2 = "";
-	String return3 = "";
-	String name = "";
-	
-	// multipart로 전송되었는가 체크
-	if (ServletFileUpload.isMultipartContent(request)){
+String return1="";
+String return2="";
+String return3="";
+String name = "";
+ 
+if (ServletFileUpload.isMultipartContent(request)){
     ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
     uploadHandler.setHeaderEncoding("UTF-8");
     List<FileItem> items = uploadHandler.parseRequest(request);
@@ -91,7 +88,5 @@
     }
 }
 response.sendRedirect(return1+return2+return3);
-
+ 
 %>
-
-

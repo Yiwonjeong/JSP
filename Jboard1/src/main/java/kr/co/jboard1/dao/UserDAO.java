@@ -6,22 +6,24 @@ import java.sql.ResultSet;
 
 import kr.co.jboard1.bean.UserBean;
 import kr.co.jboard1.db.DBCP;
+import kr.co.jboard1.db.DBHelper;
 import kr.co.jboard1.db.Sql;
 
-public class UserDAO {
-
-	// 싱글톤
+public class UserDAO extends DBHelper {
+	
 	private static UserDAO instance = new UserDAO();
+	
 	public static UserDAO getInstance() {
 		return instance;
 	}
+	
 	private UserDAO() {}
 	
 	// 기본 CRUD
-	public void insertUser(UserBean ub) {
+	public void insertUserDAO(UserBean ub) {
 		try{
-			Connection con = DBCP.getConnection();
-			PreparedStatement psmt = con.prepareStatement(Sql.INSERT_USER);
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.INSERT_USER);
 			psmt.setString(1, ub.getUid());
 			psmt.setString(2, ub.getPass());
 			psmt.setString(3, ub.getName());
@@ -35,24 +37,23 @@ public class UserDAO {
 			
 			psmt.executeUpdate();
 			
-			con.close();
-			psmt.close();
+			close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
-	public UserBean selectUser(String uid, String pass) {
+	public UserBean selectUserDAO(String uid, String pass) {
 		
 		UserBean ub = null;
-		
+
 		try{
-			Connection con = DBCP.getConnection();
-			PreparedStatement psmt = con.prepareStatement(Sql.SELECT_USER);
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_USER);
 			psmt.setString(1, uid);
 			psmt.setString(2, pass);
 			
-			ResultSet rs = psmt.executeQuery();
+			rs = psmt.executeQuery();
 			
 			if(rs.next()){
 				ub = new UserBean();
@@ -71,74 +72,63 @@ public class UserDAO {
 				ub.setRdate(rs.getString(12));
 			}
 			
-			rs.close();
-			con.close();
-			psmt.close();
-			
+			close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
 		return ub;
 	}
 	
-	public void selectUsers() {}
-	
-	public int selectCountUid(String uid) {
+	public int selectCountUidDAO(String uid) {
 		
 		int result = 0;
 		
 		try{
-			Connection con = DBCP.getConnection();
-			
-			PreparedStatement psmt = con.prepareStatement(Sql.SELECT_COUNT_UID);
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_COUNT_UID);
 			psmt.setString(1, uid);
 			
-			ResultSet rs = psmt.executeQuery() ;
+			rs = psmt.executeQuery() ;
 			
 			
 			if(rs.next()){ 
 				result = rs.getInt(1);
 			}
 			
-			rs.close();
-			con.close();
-			psmt.close();
-			
+			close();
 		}catch(Exception e){
 			e.printStackTrace();		
 		}	
+		
 		return result;
 	}
 	
-	public int selectCountNick(String nick) {
-		
+	public int selectCountNickDAO(String nick) {
 		int result = 0;
 		
 		try{
-			Connection con = DBCP.getConnection();
-			
-			PreparedStatement psmt = con.prepareStatement(Sql.SELECT_COUNT_NICK);
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_COUNT_NICK);
 			psmt.setString(1, nick);
 			
-			ResultSet rs = psmt.executeQuery() ;
+			rs = psmt.executeQuery() ;
 			
 			
 			if(rs.next()){ 
 				result = rs.getInt(1);
 			}
 			
-			rs.close();
-			con.close();
-			psmt.close();
+			close();
 			
 		}catch(Exception e){
 			e.printStackTrace();		
 		}	
+		
 		return result;
 	}
-	
-	public void updateUser() {}
-	
-	public void deleteUser() {}
-	
+	public void selectUsersDAO() {}
+	public void updateUserDAO() {}
+	public void deleteUserDAO() {}
+
 }

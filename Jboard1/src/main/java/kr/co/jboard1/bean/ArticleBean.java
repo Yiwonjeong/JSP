@@ -1,10 +1,12 @@
 package kr.co.jboard1.bean;
 
-import java.util.Set;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class ArticleBean {
+	
 	private int no;
-	private int parent;
+	private  int parent;
 	private int comment;
 	private String cate;
 	private String title;
@@ -15,20 +17,13 @@ public class ArticleBean {
 	private String regip;
 	private String rdate;
 	
-	// 추가 필드
+	// 추가 필드 
+	private String fname;
 	private String nick;
-	
 	private int fno;
 	private int pno;
 	private String newName;
 	private String oriName;
-	private int download;
-	
-	
-	
-	private String fname;
-	
-	
 	
 	public String getFname() {
 		return fname;
@@ -36,7 +31,8 @@ public class ArticleBean {
 	public void setFname(String fname) {
 		this.fname = fname;
 	}
-		public int getFno() {
+	
+	public int getFno() {
 		return fno;
 	}
 	public void setFno(int fno) {
@@ -66,6 +62,8 @@ public class ArticleBean {
 	public void setDownload(int download) {
 		this.download = download;
 	}
+	private int download;
+	
 	public String getNick() {
 		return nick;
 	}
@@ -73,30 +71,14 @@ public class ArticleBean {
 		this.nick = nick;
 	}
 	
-	public int getNo() {
-		return no;
-	}
-	public void setNo(int no) {
-		this.no = no;
-	}
 	public int getParent() {
 		return parent;
 	}
 	public void setParent(int parent) {
 		this.parent = parent;
 	}
-	
-	// overroad
 	public void setParent(String parent) {
 		this.parent = Integer.parseInt(parent);
-	}
-	
-	
-	public int getComment() {
-		return comment;
-	}
-	public void setComment(int comment) {
-		this.comment = comment;
 	}
 	public String getCate() {
 		return cate;
@@ -104,35 +86,11 @@ public class ArticleBean {
 	public void setCate(String cate) {
 		this.cate = cate;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
 	public int getFile() {
 		return file;
 	}
 	public void setFile(int file) {
 		this.file = file;
-	}
-	public int getHit() {
-		return hit;
-	}
-	public void setHit(int hit) {
-		this.hit = hit;
-	}
-	public String getUid() {
-		return uid;
-	}
-	public void setUid(String uid) {
-		this.uid = uid;
 	}
 	public String getRegip() {
 		return regip;
@@ -140,12 +98,47 @@ public class ArticleBean {
 	public void setRegip(String regip) {
 		this.regip = regip;
 	}
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public int getComment() {
+		return comment;
+	}
+	public void setComment(int comment) {
+		this.comment = comment;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 	public String getRdate() {
-		return rdate;
+		return rdate.substring(2,10);
 	}
 	public void setRdate(String rdate) {
 		this.rdate = rdate;
 	}
-	
-	
+	public int getHit() {
+		return hit;
+	}
+	public void setHit(int hit) {
+		this.hit = hit;
+	}
+
 }

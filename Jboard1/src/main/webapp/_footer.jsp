@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-
-        <footer>
-           <p>ⓒCopyright by circle.or.kr</p> 
+   <footer>
+            <p>ⓒCopyright seo.co.kr</p>
         </footer>
-    </div>    
+	</div>
 </body>
 </html>

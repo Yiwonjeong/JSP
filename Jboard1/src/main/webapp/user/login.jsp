@@ -2,6 +2,7 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	String success = request.getParameter("success");
+
 %>
 <%@ include file="./_header.jsp" %>
 <script>

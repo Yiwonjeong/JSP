@@ -6,7 +6,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="./_header.jsp" %>
 <script>
-	// 동의란 미체크 시, 진행 불가 기능 
+	// 동의 체크박스 체크가 되어있지 않으면 다음으로 진행 못하게 하는 함수
 	$(function() {
 		$('.btnNext').click(function() {
 			let isChecked1 = $('input[class=terms]').is(':checked');
@@ -23,14 +23,24 @@
 <%
 	String terms = null; // 사이트 이용약관
 	String privacy = null; // 개인정보 취급방침
+
 	try{
+		// 1, 2단계 - JDBC 드라이버 로드 및 DB 접속
 		Connection con = DBCP.getConnection();
+		
+		// 3단계 - SQL실행 객체 생성
 		Statement stmt = con.createStatement();
+		
+		// 4단계 -  SQL실행
 		ResultSet rs = stmt.executeQuery(Sql.SELECT_TERMS);
+		
+		// 5단계 - SQL결과 처리
 		if(rs.next()){
 			terms = rs.getString(1);
 			privacy = rs.getString(2);
 		}
+		
+		// 6단계 - 연결해제
 		con.close();
 		stmt.close();
 		rs.close();

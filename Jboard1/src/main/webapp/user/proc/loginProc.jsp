@@ -12,8 +12,8 @@
 	String uid = request.getParameter("uid");
 	String pass = request.getParameter("pass");
 	
-	UserBean ub = UserDAO.getInstance().selectUser(uid, pass);
-	
+	UserBean ub = UserDAO.getInstance().selectUserDAO(uid, pass);
+
 	if(ub != null){
 		// 회원이 맞을 경우
 		// 세션처리
@@ -25,4 +25,6 @@
 		// 회원이 아닐 경우
 		response.sendRedirect("/Jboard1/user/login.jsp?success=100");
 	}
+
+
 %>

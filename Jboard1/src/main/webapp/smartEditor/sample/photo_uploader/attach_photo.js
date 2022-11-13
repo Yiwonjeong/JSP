@@ -1,4 +1,4 @@
-//변수 선언 및 초기화
+	//변수 선언 및 초기화
 	var nImageInfoCnt = 0;
 	var htImageInfo = [];		//image file정보 저장
 	var aResult = [];
@@ -479,7 +479,7 @@
  	 */
  	function callFileUploader (){
  		oFileUploader = new jindo.FileUploader(jindo.$("uploadInputBox"),{
- 			sUrl  : '/Jboard1/file_uploader.jsp',	 //변경 URL입니다.
+ 			sUrl  : '/Jboard1/file_uploader.jsp',	//샘플 URL입니다.
  	        sCallback : '/Jboard1/smartEditor/sample/photo_uploader/callback.html',	//업로드 이후에 iframe이 redirect될 콜백페이지의 주소
  	    	sFiletype : "*.jpg;*.png;*.bmp;*.gif",						//허용할 파일의 형식. ex) "*", "*.*", "*.jpg", 구분자(;)	
  	    	sMsgNotAllowedExt : 'JPG, GIF, PNG, BMP 확장자만 가능합니다',	//허용할 파일의 형식이 아닌경우에 띄워주는 경고창의 문구

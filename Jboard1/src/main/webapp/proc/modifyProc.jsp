@@ -114,5 +114,7 @@
 		}
 		dao.deleteAllImg(no); // 해당 게시글의 DB에 있는 모든 삽입 이미지 삭제
 	}
+
 	response.sendRedirect("/Jboard1/view.jsp?no=" + no + "&pg=" + pg+"&result=202");
 %>
+				  

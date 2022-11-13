@@ -1,7 +1,6 @@
 package kr.co.jboard1.bean;
 
 public class UserBean {
-	
 	private String uid;
 	private String pass;
 	private String name;
@@ -87,8 +86,6 @@ public class UserBean {
 	public void setRdate(String rdate) {
 		this.rdate = rdate;
 	}
-	
-	
 	
 	
 }

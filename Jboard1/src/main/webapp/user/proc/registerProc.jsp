@@ -18,7 +18,6 @@
 	String addr2 = request.getParameter("addr2");
 	String regip = request.getRemoteAddr();
 	
-	// 데이터베이스 처리
 	UserBean ub = new UserBean();
 	ub.setUid(uid);
 	ub.setPass(pass);
@@ -31,7 +30,7 @@
 	ub.setAddr2(addr2);
 	ub.setRegip(regip);
 	
-	UserDAO.getInstance().insertUser(ub);
+	UserDAO.getInstance().insertUserDAO(ub);
 	
 	response.sendRedirect("/Jboard1/user/login.jsp");
 %>

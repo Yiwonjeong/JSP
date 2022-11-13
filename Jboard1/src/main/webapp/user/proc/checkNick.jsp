@@ -13,7 +13,7 @@
 	String nick = request.getParameter("nick");
 	
 	// 데이터 베이스 처리
-	int result = UserDAO.getInstance().selectCountNick(nick);
+	int result = UserDAO.getInstance().selectCountNickDAO(nick);	
 	
 	// JSON 출력
 	JsonObject json = new JsonObject();
@@ -21,4 +21,6 @@
 	
 	String jsonData = json.toString();
 	out.print(jsonData);
+
+
 %>
