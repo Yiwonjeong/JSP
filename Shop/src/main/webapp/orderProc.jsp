@@ -18,18 +18,37 @@
 		// DB 접속
 		Connection conn = DBCP.getConnection();
 		
+		// 트랜잭션 
+		conn.setAutoCommit(false);
+		
 		// SQL 실행 객체 생성
 		String sql = "INSERT INTO `Order` (`orderId`, `orderProduct`, `orderCount`, `orderDate`) values (?,?,?,NOW())";
-		PreparedStatement psmt = conn.prepareStatement(sql);
-		psmt.setString(1, prodOrderer);
-		psmt.setString(2, prodNo);
-		psmt.setString(3, prodCount);
+		// 재고 관리
+		/* 
+		string sql = "UPDATE [Product] SET [Quantity]=[Quantity] - 1 WHERE [Product Name] = @product";
+        */
+		String update_stock_sql = "UPDATE `product` SET " 
+						   	  + "`stock`=`stock`- (SELECT `orderCount` FROM `order` ORDER BY orderDate DESC LIMIT 1)"
+							  + "WHERE `prodNo`= ?";   
+		
+		
+		PreparedStatement psmt1 = conn.prepareStatement(sql);
+		psmt1.setString(1, prodOrderer);
+		psmt1.setString(2, prodNo);
+		psmt1.setString(3, prodCount);
+		
+		PreparedStatement psmt2 = conn.prepareStatement(update_stock_sql);
+		psmt2.setString(1, prodNo);
 		
 		// SQL 실행
-		result = psmt.executeUpdate();
+		psmt1.executeUpdate();
+		result = psmt2.executeUpdate();
+		
+		conn.commit();
 		
 		// 연결 해제
-		psmt.close();
+		psmt1.close();
+		psmt2.close();
 		conn.close();
 	
 	}catch(Exception e){
