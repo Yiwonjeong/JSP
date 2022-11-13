@@ -1,3 +1,4 @@
+<%@page import="org.apache.catalina.manager.util.SessionUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.co.jboard1.dao.ArticleDAO"%>
 <%@page import="kr.co.jboard1.bean.ArticleBean"%>
@@ -8,6 +9,7 @@
 <%@page import="kr.co.jboard1.db.DBCP"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	//전송 데이터 수신
 	request.setCharacterEncoding("UTF-8");
 	String no = request.getParameter("no");
 	String pg = request.getParameter("pg");
@@ -17,13 +19,16 @@
 	// 조회수 +1
 	dao.updateArticleHit(no);
 	
-	// 글 가져오기
+	// 조건에 해당하는 글 가져오기
 	ArticleBean article = dao.selectArticle(no);
 	
 	// 댓글 가져오기
 	List<ArticleBean> comments = dao.selectComments(no);
+
+	
 %>
 <%@ include file="./_header.jsp" %>
+<script src="/Jboard1/js/comment.js"></script>
 <script>
 	$(document).ready(function(){
 		
@@ -37,125 +42,23 @@
 			}
 		});
 		
+		// 게시글 댓글 유뮤 확인 후 출력
+		commentEmpty();
 		
 		// 댓글 삭제
-		$(document).on('click', '.remove', function(e){
-			e.preventDefault();
-			
-			let isDeleteOk = confirm('정말 삭제 하시겠습니까?');
-			
-			if(isDeleteOk){
-				
-				let article = $(this).closest('article');
-				let no = $(this).attr('data-no');
-				let jsonData = {"no": no};
-				
-				$.ajax({
-					url: '/Jboard1/proc/commentDeleteProc.jsp',
-					type: 'GET',
-					data: jsonData,
-					dataType: 'json',
-					success: function(data){
-						if(data.result == 1){
-							alert('댓글이 삭제되었습니다.');							
-							article.hide();
-						}
-					}
-				});
-			}
-		});
+		commentDelete();
 		
 		// 댓글 수정
-		$(document).on('click', '.modify', function(e){
-			e.preventDefault();
-			
-			let txt   = $(this).text();
-			let p_tag = $(this).parent().prev();
-			
-			if(txt == '수정'){
-				// 수정모드
-				$(this).text('수정완료');				
-				p_tag.attr('contentEditable', true);
-				p_tag.focus();	
-			}else{
-				// 수정완료
-				$(this).text('수정');	
-				
-				let no = $(this).attr('data-no');
-				let content = p_tag.text();
-				
-				let jsonData = {
-					"no": no,
-					"content": content
-				};
-				
-				console.log(jsonData);
-				
-				$.ajax({
-					url: '/Jboard1/proc/commentModifyProc.jsp',
-					type: 'POST',
-					data: jsonData,
-					dataType: 'json',
-					success: function(data){
-						
-						if(data.result == 1){
-							alert('댓글이 수정되었습니다.');
-							p_tag.attr('contentEditable', false);
-						}
-					}
-				});
-			}
-		});
+		commentModify();
 		
 		// 댓글 작성
-		$('.commentForm > form').submit(function(){
-			
-			let no       = $(this).children('input[name=no]').val();
-			let uid      = $(this).children('input[name=uid]').val();
-			let textarea = $(this).children('textarea[name=content]');
-			let content  = textarea.val();
-			
-			if(content == ''){
-				alert('댓글을 작성하세요.');
-				return false;
-			}
-			
-			let jsonData = {
-				"no": no,
-				"uid": uid,
-				"content": content
-			};
-			
-			$.ajax({
-				url: '/Jboard1/proc/commentWriteProc.jsp',
-				method: 'POST',
-				data: jsonData,
-				dataType: 'json',
-				success: function(data){
-					console.log(data);
-					
-					if(data.result > 0){
-						
-						let article = "<article>";
-							article += "<span class='nick'>"+data.nick+"</span>";
-							article += "<span class='date'>"+data.date+"</span>";
-							article += "<p class='content'>"+data.content+"</p>";
-							article += "<div>";
-							article += "<a href='#' class='remove' data-no='"+data.no+"'>삭제</a>";
-							article += "<a href='#' class='modify' data-no='"+data.no+"'>수정</a>";
-							article += "</div>";
-							article += "</article>";
-						
-							
-						$('.commentList > .empty').hide();
-						$('.commentList').append(article);
-						textarea.val('');
-					}
-				}
-			});
-			return false;
-		});
-	});
+		commentWrite();
+		
+		$('btnCancel').click(function(e){
+			e.preventDefault();
+			$('textarea[name=content]').val('');
+		})
+	}
 </script>
 
 <main id="board">
@@ -184,7 +87,7 @@
         	<% if(ub.getUid().equals(article.getUid())){ %>
             <a href="/Jboard1/proc/deleteProc.jsp?no=<%= article.getNo() %>&pg=<%= pg %>" class="btn btnRemove">삭제</a>
             <a href="/Jboard1/modify.jsp?no=<%= article.getNo() %>&pg=<%= pg %>" class="btn btnModify">수정</a>
-             <% } %>
+            <% } %>
             <a href="/Jboard1/list.jsp?pg=<%= pg %>" class="btn btnList">목록</a>
         </div>
 
@@ -197,9 +100,9 @@
                 <span class="nick"><%= comment.getNick() %></span>
                 <span class="date"><%= comment.getRdate().substring(2, 10) %></span>
                 <p class="content"><%= comment.getContent() %></p>
-                <% if(ub.getUid().equals(comment.getUid())) { %>
+                <% if(ub.getUid().equals(comment.getUid())){ %>
                 <div>
-                    <a href="#" class="remove" data-no="<%= comment.getNo() %>">삭제</a>
+                    <a href="#" class="remove" data-no="<%= comment.getNo() %>" data-parent="<%= comment.getParent() %>">삭제</a>
                     <a href="#" class="modify" data-no="<%= comment.getNo() %>">수정</a>
                 </div>
                 <% } %>

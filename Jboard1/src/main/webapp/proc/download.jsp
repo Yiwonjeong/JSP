@@ -13,10 +13,11 @@
 <%@page import="java.net.URLEncoder"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	// 파일 정보 가져오기
+//전송 데이터 수신
 	request.setCharacterEncoding("utf-8");
 	String parent = request.getParameter("parent");
-
+	
+	// 파일 정보 가져오기
 	ArticleDAO dao = ArticleDAO.getInstance();
 	
 	FileBean fb = dao.selectFile(parent);

@@ -1,11 +1,15 @@
 package kr.co.jboard1.dao;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import kr.co.jboard1.bean.ArticleBean;
 import kr.co.jboard1.bean.FileBean;
@@ -14,6 +18,8 @@ import kr.co.jboard1.db.Sql;
 
 // DAO(Data Access Object) : 데이터베이스 처리 클래스
 public class ArticleDAO {
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private static ArticleDAO instance = new ArticleDAO();
 	public static ArticleDAO getInstance() {
@@ -27,6 +33,7 @@ public class ArticleDAO {
 		int parent = 0;
 		
 		try{
+			
 			Connection conn = DBCP.getConnection();
 			// 트랜젝션 시작
 			conn.setAutoCommit(false);
@@ -57,6 +64,7 @@ public class ArticleDAO {
 			
 		}catch(Exception e){
 			e.printStackTrace();
+			
 		}
 		return parent;
 	}
@@ -78,6 +86,39 @@ public class ArticleDAO {
 		}
 	}
 	
+	public void insertFiles(int parent, String[] fNames) {
+		
+		try{
+			logger.info("insertFiles");
+			Connection conn = DBCP.getConnection();
+			String sql = "INSERT INTO `board_file` (`parent`, `newName`, `oriName`)"
+					+ " VALUES ";
+			for(int i=0; i<fNames.length; i++) {
+				if(i == fNames.length-1) {
+					sql += " (?,?,'삽입 이미지'); ";
+				} else {
+					sql += " (?,?,'삽입 이미지'), ";
+				}
+			}
+			
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			int num = 1;
+			for(int i=0; i<fNames.length; i++) {
+				psmt.setInt(num++, parent);
+				psmt.setString(num++, fNames[i]);
+			}
+			
+			psmt.executeUpdate();
+			
+			psmt.close();
+			conn.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+	}
+	
 	public ArticleBean insertComment(ArticleBean comment) {
 		
 		ArticleBean article = null;
@@ -87,14 +128,18 @@ public class ArticleDAO {
 			Connection conn = DBCP.getConnection();
 			
 			conn.setAutoCommit(false);
-			PreparedStatement psmt = conn.prepareStatement(Sql.INSERT_COMMENT);
+			PreparedStatement psmt1 = conn.prepareStatement(Sql.INSERT_COMMENT);
+			PreparedStatement psmt2 = conn.prepareStatement(Sql.UPDATE_ARTICLE_COMMENT_PLUS);
 			Statement stmt = conn.createStatement();
-			psmt.setInt(1, comment.getParent());
-			psmt.setString(2, comment.getContent());
-			psmt.setString(3, comment.getUid());
-			psmt.setString(4, comment.getRegip());
+			psmt1.setInt(1, comment.getParent());
+			psmt1.setString(2, comment.getContent());
+			psmt1.setString(3, comment.getUid());
+			psmt1.setString(4, comment.getRegip());
 			
-			result = psmt.executeUpdate();
+			psmt2.setInt(1, comment.getParent());
+			
+			result = psmt1.executeUpdate();
+			psmt2.executeUpdate();
 			ResultSet rs = stmt.executeQuery(Sql.SELECT_COMMENT_LATEST);
 			
 			conn.commit();
@@ -102,6 +147,7 @@ public class ArticleDAO {
 			if(rs.next()) {
 				article = new ArticleBean();
 				article.setNo(rs.getInt(1));
+				article.setParent(rs.getInt(2));
 				article.setContent(rs.getString(6));
 				article.setRdate(rs.getString(11).substring(2, 10));
 				article.setNick(rs.getString(12));
@@ -109,7 +155,8 @@ public class ArticleDAO {
 			
 			rs.close();
 			stmt.close();
-			psmt.close();
+			psmt1.close();
+			psmt2.close();
 			conn.close();
 			
 		}catch(Exception e){
@@ -119,11 +166,15 @@ public class ArticleDAO {
 		return article;
 	}
 	
+	// 모든 게시물의 수를 가져오는 메서드
 	public int selectCountTotal() {
 		
 		int total = 0;
 		
 		try {
+			
+			logger.info("selectCounttotal");
+			
 			Connection conn = DBCP.getConnection();
 			Statement stmt = conn.createStatement();
 			
@@ -137,10 +188,11 @@ public class ArticleDAO {
 			conn.close();
 		}catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return total;
 	}
-	
+	// 모든 게시물을 가져오는 메서드
 	public ArticleBean selectArticle(String no) {
 		
 		ArticleBean article = null;
@@ -289,7 +341,10 @@ public class ArticleDAO {
 		return comments;
 	}
 	
-	public void updateArticle(String no, String title, String content) {
+	public int updateArticle(String no, String title, String content) {
+		
+		int result = 0;
+		
 		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement psmt = conn.prepareStatement(Sql.UPDATE_ARTICLE);
@@ -298,11 +353,14 @@ public class ArticleDAO {
 			psmt.setString(3, no);
 			
 			psmt.executeUpdate();
+			
 			psmt.close();
 			conn.close();
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
 	public void updateArticleHit(String no) {
@@ -364,22 +422,6 @@ public class ArticleDAO {
 		
 	}
 	
-	public int deleteComment(String no) {
-		int result = 0;
-		try {
-			Connection conn = DBCP.getConnection();
-			PreparedStatement psmt = conn.prepareStatement(Sql.DELETE_COMMENT);
-			psmt.setString(1, no);
-			result = psmt.executeUpdate();
-			psmt.close();
-			conn.close();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-	
 	public String deleteFile(String no) {
 		
 		String newName = null;
@@ -406,11 +448,153 @@ public class ArticleDAO {
 			psmt1.close();
 			psmt2.close();
 			conn.close();
-		}catch(Exception e){
-			e.printStackTrace();
 			
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
+		
 		return newName;
 	}
+	
+	public int deleteComment(String no, String parent) {
+		int result = 0;
+		try {
+			Connection conn = DBCP.getConnection();
+			
+			conn.setAutoCommit(false);
+			PreparedStatement psmt1 = conn.prepareStatement(Sql.DELETE_COMMENT);
+			PreparedStatement psmt2 = conn.prepareStatement(Sql.UPDATE_ARTICLE_COMMENT_MINUS);
+			psmt1.setString(1, no);
+			psmt2.setString(1, parent);
+			result = psmt1.executeUpdate();
+			psmt2.executeUpdate();
+			
+			conn.commit();
+			
+			psmt1.close();
+			psmt2.close();
+			conn.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// 게시글, 댓글 , 파일 데이터 삭제
+		public void deleteArticleFile(String no) {
+			
+			try {
+				logger.info("deleteArticleFile");
+				Connection conn = DBCP.getConnection();
+				PreparedStatement psmt = conn.prepareStatement(Sql.DELETE_ARTICLE_FILE);
+				psmt.setString(1, no);
+				psmt.setString(2, no);
+				
+				psmt.executeUpdate();
+				
+				psmt.close();
+				conn.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+		}
+		
+		public void deleteAllImg(String no) {
+			
+			try {
+				logger.info("deleteImg");
+				Connection conn = DBCP.getConnection();
+				
+				String sql = "DELETE FROM `board_file` WHERE `parent`=? and `oriName`= '삽입 이미지'";
+				
+				PreparedStatement psmt = conn.prepareStatement(sql);
+				psmt.setString(1, no);
+				
+				psmt.executeUpdate();
+			 
+				psmt.close();
+				conn.close();
+			    
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+		}
+		
+		public void deleteSelectedImg(String no, String[] fileNames) {
+			try {
+				logger.info("deleteSelectedImg");
+				Connection conn = DBCP.getConnection();
+				
+				String sql = "DELETE FROM `board_file` WHERE `parent`=? and `oriName`= '삽입 이미지'"
+						   + " and `newName` NOT IN (";
+				
+				for(int i=0; i<fileNames.length; i++) {
+					if(i == fileNames.length-1) {
+						sql += "?)";
+						break;
+					}
+					sql += "?,";
+				}
+				
+				PreparedStatement psmt = conn.prepareStatement(sql);
+				
+				psmt.setString(1, no);
+				
+				int num = 2;
+				for(int i=0; i<fileNames.length; i++) {
+					psmt.setString(num++, fileNames[i]);
+				}
+				
+				psmt.executeUpdate();
+				
+				psmt.close();
+				conn.close();
+			    
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+		}
+		
+		public List<FileBean> selectImg(String parent) {
+			
+			List<FileBean> files = null;
+			
+			try{
+				logger.info("selectImg");
+				Connection conn = DBCP.getConnection();
+				PreparedStatement psmt = conn.prepareStatement(Sql.SELECT_FILE_IMG);
+				psmt.setString(1, parent);
+				
+				ResultSet rs = psmt.executeQuery();
+				
+				files = new ArrayList<>();
+				
+				while(rs.next()){
+					FileBean fb = new FileBean();
+					fb.setFno(rs.getInt(1));
+					fb.setParent(rs.getInt(2));
+					fb.setNewName(rs.getString(3));
+					fb.setOriName(rs.getString(4));
+					fb.setDownload(rs.getInt(5));
+					
+					files.add(fb);
+				}
+				
+				rs.close();
+				psmt.close();
+				conn.close();
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+			
+			return files;
+		}
 	
 }

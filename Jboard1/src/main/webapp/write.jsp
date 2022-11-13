@@ -1,26 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="_header.jsp" %>
+<!-- Smart Editor -->
+<script type="text/javascript" src="/Jboard1/smartEditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script src="/Jboard1/js/smartEditor.js"></script>
 <script>
-	function vaildateForm(form) {
-		if(form.title.value == ""){
-			alert('제목을 입력해주세요.');
-			form.title.focus();
-			return false;
-		}
-		if(form.content.value == ""){
-			alert('내용을 입력해주세요.');
-			form.content.focus();
-			return false;
-		}
-		return true;
-	}
+	$(function () {
+		smarteditor();
+	});
 </script>
+
+
 	<main id="board">
 	    <section class="write">
-	        <form action="/Jboard1/proc/writeProc.jsp" method="post" enctype="multipart/form-data" onsubmit="return vaildateForm(this)">
+	        <form action="/Jboard1/proc/writeProc.jsp" method="post" enctype="multipart/form-data">
 	        	<input type="hidden"  name="uid" value="<%= ub.getUid() %>">
+	        	<input type="hidden"  name="img">
 	            <table border="0">
-	             <caption>글쓰기</caption>
+	             <caption>글 쓰기</caption>
 	             <tr>
 	                 <th>제목</th>
 	                 <td><input type="text" name="title" placeholder="제목을 입력하세요." autofocus/></td>
@@ -28,7 +24,7 @@
 	             <tr>
 	                 <th>내용</th>
 	                 <td>
-	                     <textarea name="content" ></textarea>
+	                     <textarea name="editorTxt" id="editorTxt" rows="20" cols="10" placeholder="내용을 입력하세요." style="width: 100%"></textarea>
 	                 </td>
 	             </tr>
 	             <tr>

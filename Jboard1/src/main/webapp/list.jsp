@@ -13,14 +13,14 @@
 	String pg = request.getParameter("pg");
 	
 	// 게시물 목록 처리 관련 변수 선언
-	int limitStart = 0;
-	int currentPage = 1;
-	int total = 0;
-	int lastPageNum = 0;
-	int pageGroupCurrent = 1;
-	int pageGroupStart = 1;
-	int pageGroupEnd = 0;
-	int pageStartNum = 0;
+	int limitStart = 0; 		// 현재 페이지에서 시작하는 게시물 시작값
+	int currentPage = 1; 		// 현재 페이지
+	int total = 0; 				// 게시물 총 개수
+	int lastPageNum = 0; 		// 마지막 페이지
+	int pageGroupCurrent = 1; 	// 그룹 번호
+	int pageGroupStart = 1; 	// 그룹에서 첫페이지
+	int pageGroupEnd = 0; 		// 그룹에서 마지막페이지
+	int pageStartNum = 0;		// 게시물의 번호 정렬
 	
 	// 게시물 DAO 객체 가져오기
  	ArticleDAO dao = ArticleDAO.getInstance();
@@ -62,7 +62,7 @@
 <main id="board">
     <section class="list">
         <table border="0">
-            <caption>글목록</caption>
+            <caption>글 목록</caption>
             <tr>
                 <th>번호</th>
                 <th>제목</th>

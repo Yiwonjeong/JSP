@@ -1,5 +1,7 @@
 package kr.co.jboard1.bean;
 
+import java.util.Set;
+
 public class ArticleBean {
 	private int no;
 	private int parent;
@@ -21,6 +23,8 @@ public class ArticleBean {
 	private String newName;
 	private String oriName;
 	private int download;
+	
+	
 	
 	private String fname;
 	

@@ -1,13 +1,13 @@
 <%@page import="kr.co.jboard1.bean.UserBean"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	String result = request.getParameter("result");
 	UserBean ub = (UserBean)session.getAttribute("sessUser");
 	
 	if(ub == null){
 		response.sendRedirect("/Jboard1/user/login.jsp?success=101");
 		return;
 	}
+	String result = request.getParameter("result");
 %>
 <!DOCTYPE html>
 <html lang="en">
