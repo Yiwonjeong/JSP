@@ -244,6 +244,7 @@ main > .info > .tabs > .tablist > .txt > li {
     display: inline;
     border: 1px solid #d3d3d3;
     margin: 1px 2px 0 0;
+    padding: 7px 2px;
 }
 main > .info > .tabs > .tablist > .txt > li > a {
     padding: 6px 12px;
@@ -284,6 +285,10 @@ footer {
     margin-top: 10px;
     border-top: 1px solid #d1cab2;
     box-sizing: border-box;
+}
+footer > img {
+    margin-top: 12px;
+    margin-left: 8px;
 }
 
 footer > p {
