@@ -1,22 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>글 쓰기</title>
-    <link rel="stylesheet" href="./css/style.css">
-   
-</head>
-<body>
-    <div id="wrapper">
-        <header>
-            <h3>Board System v1.0</h3>
-            <p>
-                <span>홍길동</span>님 반갑습니다. 
-                <a href="./user/login.jsp">[로그아웃]</a>
-            </p>
-        </header>
-        
+<%@ include file="/_header.jsp" %>
+<%
+	String group = request.getParameter("group");
+	String cate  = request.getParameter("cate");
+	pageContext.include("/board/_"+group+".jsp");
+%>
+
         <main id="board">
             <section class="write">
                    <table border="0">
@@ -37,16 +26,12 @@
                     </tr>
                      </table>
                     <div>
-                        <a href="./list.jsp" class="btn btnCancel">취소</a>
-                        <input type="submit" class="btn btnWrite" value="작성완료"> 
+                       <a href="./list.jsp?group=<%= group %>&cate=<%= cate %>" class="btn btnCancel">취소</a>
+                        <input type="submit" class="btn btnComplete" value="작성완료"> 
+                        <%-- <a href="./write.jsp?group=<%= group %>&cate=<%= cate %>" class="btn btnWrite">글쓰기</a> --%>
                     </div> 
  
             </section>
         </main>
 
-        <footer>
-           <p>ⓒCopyright by circle.or.kr</p> 
-        </footer>
-    </div>    
-</body>
-</html>
+<%@ include file="/_footer.jsp" %>

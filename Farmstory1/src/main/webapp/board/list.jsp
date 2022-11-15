@@ -2,10 +2,9 @@
 <%@ include file="/_header.jsp" %>
 <%
 	String group = request.getParameter("group");
-	
+	String cate  = request.getParameter("cate");
 	pageContext.include("/board/_"+group+".jsp");
 %>
-
 <main id="board">
     <section class="list">
         <table border="0">
@@ -19,7 +18,7 @@
             </tr>
             <tr>
                 <td>1</td>
-                <td><a href="./view.jsp">테스트 제목입니다. [3] </a> </td>
+                <td><a href="./view.jsp?group=<%= group %>&cate=<%= cate %>">테스트 제목입니다.[3]</a></td>
                 <td>길동이</td>
                 <td>20-05-12</td>
                 <td>12</td>
@@ -38,20 +37,7 @@
                 <td>20-05-12</td>
                 <td>12</td>
             </tr>
-            <tr>
-                <td>4</td>
-                <td>테스트 제목입니다. [3] </td>
-                <td>길동이</td>
-                <td>20-05-12</td>
-                <td>12</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>테스트 제목입니다. [3] </td>
-                <td>길동이</td>
-                <td>20-05-12</td>
-                <td>12</td>
-            </tr>
+
         </table>
         <div class="page">
             <a href="#" class="prev">이전</a>
@@ -60,7 +46,7 @@
             <a href="#" class="num">3</a>
             <a href="#" class="next">다음</a>
         </div>
-        <a href="./write.jsp" class="btn btnWrite">글쓰기</a>
+        <a href="./write.jsp?group=<%= group %>&cate=<%= cate %>" class="btn btnWrite">글쓰기</a>
     </section>
 </main>
         

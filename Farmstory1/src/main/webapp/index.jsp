@@ -150,7 +150,7 @@
         <div class="tabs">
             <div class="tablist">
                 <ul class="txt">
-                    <li>
+                    <li class="on">
                         <a href="#">공지사항</a>
                     </li>
                     <li>
@@ -161,13 +161,27 @@
                     </li>
                 </ul>
             </div>
-            <div class="tablist2">
-                <ul class="txt2">
-                    <li><a href="#">· 홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+            <section class="tablist1">
+                <ul class="txt1">
+                    <li><a href="#">· 1홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 1홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 1홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
                 </ul>
-            </div>
+            </section>
+            <section class="tablist2 on">
+                <ul class="txt2">
+                    <li><a href="#">· 2홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 2홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 2홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                </ul>
+            </section>
+            <section class="tablist3">
+                <ul class="txt3">
+                    <li><a href="#">· 3홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 3홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 3홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                </ul>
+            </section>
         </div>
     </div>
     
