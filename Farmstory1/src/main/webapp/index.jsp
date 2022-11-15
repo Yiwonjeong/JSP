@@ -1,5 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/_header.jsp"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		
+		let tabs = $(".tabs > .tablist > .txt > li");
+		let tabContent = $(".tabs > section");
+		
+		tabs.click(function (e) {
+			e.preventDefault();
+			tabs.removeClass('on');
+			$(this).addClass('on');
+			  
+			let i = $(this).index();
+			//alert(i);
+			tabContent.hide().eq(i).show();
+			  
+		  });
+	});
+</script>
 <main>
     <div class="slider">
         <ul>
@@ -161,25 +180,25 @@
                     </li>
                 </ul>
             </div>
-            <section class="tablist1">
+            <section class="tablist1 on">
                 <ul class="txt1">
-                    <li><a href="#">· 1홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 1홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 1홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
                 </ul>
             </section>
-            <section class="tablist2 on">
+            <section class="tablist2">
                 <ul class="txt2">
-                    <li><a href="#">· 2홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 2홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 2홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 홈페이지 이용 관련 불편사항을 들려주세요.</a></li>
+                    <li><a href="#">· 홈페이지 이용 관련 불편사항을 들려주세요.</a></li>
+                    <li><a href="#">· 홈페이지 이용 관련 불편사항을 들려주세요.</a></li>
                 </ul>
             </section>
             <section class="tablist3">
                 <ul class="txt3">
-                    <li><a href="#">· 3홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 3홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
-                    <li><a href="#">· 3홈페이지 오픈 기념 이벤트를 진행합니다.</a></li>
+                    <li><a href="#">· 홈페이지를 오픈하였습니다.</a></li>
+                    <li><a href="#">· 홈페이지를 오픈하였습니다.</a></li>
+                    <li><a href="#">· 홈페이지를 오픈하였습니다.</a></li>
                 </ul>
             </section>
         </div>
