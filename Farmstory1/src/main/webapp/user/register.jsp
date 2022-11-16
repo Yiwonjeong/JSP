@@ -1,8 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/_header.jsp" %>
+<script src="/Farmstory1/js/validation.js"></script>
+<script src="/Farmstory1/js/zipcode.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!-- 우편번호 찾기 오픈 API -->
 	<main id="user">
 	    <section class="register">
-	        <form action="#" method="post">
+	        <form action="/Farmstory1/user/proc/registerProc.jsp" method="post">
 	
 	            <table border="1">
 	                <caption>사이트 이용정보 입력</caption>
@@ -21,7 +24,7 @@
 	                <tr>
 	                    <td>비밀번호 확인</td>
 	                    <td>
-	                    	<input type="password" name="pass2" placeholder="비밀버호 입력확인">
+	                    	<input type="password" name="pass2" placeholder="비밀번호 입력확인">
 	                    	<span class="passResult"></span>
 	                    </td>
 	                </tr>
