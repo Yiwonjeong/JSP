@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.farmstory1.bean.ArticleBean;
 import kr.co.farmstory1.bean.FileBean;
+import kr.co.farmstory1.db.DBCP;
 import kr.co.farmstory1.db.DBHelper;
 import kr.co.farmstory1.db.Sql;
 
@@ -199,7 +200,7 @@ public class ArticleDAO extends DBHelper {
 		return ab;
 	}
 	
-	// 모든 게시물의 수를 가져오는 메서드
+	// 모든 게시물의 수를 가져오기
 	public int selectCountTotal() {
 
 		int total = 0;
@@ -222,7 +223,7 @@ public class ArticleDAO extends DBHelper {
 		return total;
 	}
 	
-	// 모든 게시물을 가져오는 메서드
+	// 모든 게시물을 가져오기
 	public List<ArticleBean> selectArticles(String cate, int start) {
 		
 		List<ArticleBean> articles = new ArrayList<>();
@@ -263,6 +264,66 @@ public class ArticleDAO extends DBHelper {
 		
 		
 		return articles;
+	}
+	
+	// index 최신 게시글 5개씩 가져오기 
+	public List<ArticleBean> selectLatests(String cate1, String cate2, String cate3) {
+		
+		List<ArticleBean> latests = new ArrayList<>();
+		
+		try {
+			logger.info("selectLatests...");
+			
+			con = DBCP.getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_LATESTS);
+			psmt.setString(1, cate1);
+			psmt.setString(2, cate2);
+			psmt.setString(3, cate3);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				ArticleBean ab = new ArticleBean();
+				ab.setNo(rs.getInt(1));
+				ab.setTitle(rs.getString(2));
+				ab.setRdate(rs.getString(3).substring(2,10));
+				
+				latests.add(ab);
+			}
+			close();
+			
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return latests;
+	}
+	
+	// synchronized
+	public synchronized List<ArticleBean> selectLatests(String cate) {
+		
+		List<ArticleBean> latests = new ArrayList<>();
+		
+		try {
+			logger.info("selectLatests(String)...");
+			
+			con = DBCP.getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_LATEST);
+			psmt.setString(1, cate);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				ArticleBean ab = new ArticleBean();
+				ab.setNo(rs.getInt(1));
+				ab.setTitle(rs.getString(2));
+				ab.setRdate(rs.getString(3).substring(2,10));
+				
+				latests.add(ab);
+			}
+			close();
+			
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return latests;
 	}
 	
 	public List<FileBean> selectFile(String parent) {
@@ -529,7 +590,7 @@ public class ArticleDAO extends DBHelper {
 		}
 	}
 	
-	// 게시글, 댓글 , 파일 데이터 삭제
+	// 게시글, 댓글, 파일 데이터 삭제
 	public void deleteArticleFile(String no) {
 		
 		try {

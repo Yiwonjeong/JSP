@@ -273,7 +273,6 @@ main > .info > .tabs > section.on {
 }
 
 main > .info > .tabs > section > ul > li {
-    border-bottom: 1px solid #d1d1d1;
     line-height: 26px;
 }
 

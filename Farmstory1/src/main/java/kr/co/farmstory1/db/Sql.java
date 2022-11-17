@@ -24,11 +24,11 @@ public class Sql {
 	// board
 	public static final String INSERT_ARTICLE = "INSERT INTO `board_article` SET "
 												+ "`cate`=?, "
-												+ "`title`=?,"
-												+ "`content`=?,"
-												+ "`file`=?,"
-												+ "`uid`=?,"
-												+ "`regip`=?,"
+												+ "`title`=?, "
+												+ "`content`=?, "
+												+ "`file`=?, "
+												+ "`uid`=?, "
+												+ "`regip`=?, "
 												+ "`rdate`=NOW()";
 
 	public static final String INSERT_FILE = "INSERT INTO `board_file` SET "
@@ -68,7 +68,12 @@ public class Sql {
 	public static final String SELECT_COMMENT_LATEST = " SELECT a.*, b.nick FROM `board_article` a "
 													 + " JOIN `board_user` b USING(`uid`) "
 													 + " WHERE `parent` != 0 ORDER BY `no` DESC LIMIT 1";
-	
+	public static final String SELECT_LATESTS = "(select `no`,`title`,`rdate` from `board_article` where `cate`=? order by `no` desc limit 5) "
+											  + "union "
+											  + "(select `no`,`title`,`rdate` from `board_article` where `cate`=? order by `no` desc limit 5) "
+											  + "union "
+											  + "(select `no`,`title`,`rdate` from `board_article` where `cate`=? order by `no` desc limit 5)";
+	public static final String SELECT_LATEST = "select `no`,`title`,`rdate` from `board_article` where `cate`=? order by `no` desc limit 3";
 	public static final String UPDATE_ARTICLE = "UPDATE `board_article` SET "
 												 + " `title`=?,"
 												 + " `content`=?,"

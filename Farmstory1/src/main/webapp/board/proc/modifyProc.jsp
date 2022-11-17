@@ -11,5 +11,5 @@
 	
 	int result = dao.updateArticle(no, title, content);
 	
-	response.sendRedirect("/FarmStory1/board/view.jsp?group=" + group + "&cate=" + cate + "&pg=" + pg + "&no=" + no);
+	response.sendRedirect("/Farmstory1/board/view.jsp?group=" + group + "&cate=" + cate + "&pg=" + pg + "&no=" + no);
 %>
