@@ -162,7 +162,7 @@ public class ArticleDAO extends DBHelper {
 		
 		ArticleBean ab = null;
 		try{
-			logger.info("selectArticle");
+			logger.info("selectArticle...");
 			con = getConnection();
 			psmt = con.prepareStatement(Sql.SELECT_ARTICLE);
 			psmt.setString(1, no);
@@ -183,19 +183,19 @@ public class ArticleDAO extends DBHelper {
 				ab.setRegip(rs.getString(10));
 				ab.setRdate(rs.getString(11));
 				
-				ab.setFno(rs.getInt(12));
-				ab.setPno(rs.getInt(13));
-				ab.setNewName(rs.getString(14));
-				ab.setOriName(rs.getString(15));
-				ab.setDownload(rs.getInt(16));
+//				ab.setFno(rs.getInt(12));
+//				ab.setPno(rs.getInt(13));
+//				ab.setNewName(rs.getString(14));
+//				ab.setOriName(rs.getString(15));
+//				ab.setDownload(rs.getInt(16));
 			}
 			
 			close();
 			
 		}catch(Exception e){
-			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
+		logger.debug("ab: " + ab.toString());
 		return ab;
 	}
 	
@@ -478,7 +478,8 @@ public class ArticleDAO extends DBHelper {
 		String newName = null;
 		
 		try {
-			logger.info("deleteFile");
+			logger.info("deleteFile...");
+			
 			con = getConnection();
 			con.setAutoCommit(false);
 			

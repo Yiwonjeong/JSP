@@ -51,10 +51,11 @@ public class Sql {
 											  + "order by a.no DESC "
 											  + "LIMIT ?, 10";
 	
-	public static final String SELECT_ARTICLE = "SELECT a.*, f.fno, f.parent AS pno, f.newName, f.oriName, f.download "
-											  + " FROM `board_article` a LEFT JOIN `board_file` f "
-											  + " ON a.no = f.parent "
-			                                  + " WHERE a.`no`= ?";
+	public static final String SELECT_ARTICLE = "SELECT a.*, b.fno, b.parent AS pno, b.newName, b.oriName, b.download "
+												+ "FROM `board_article` AS a "
+												+ "LEFT JOIN `board_file` AS b "
+												+ "ON a.`no` = b.`parent` "
+												+ "WHERE `no`=?";
 	
 	public static final String SELECT_FILE = "SELECT * FROM `board_file` WHERE `parent`=?";
 	public static final String SELECT_FILE_IMG = "SELECT * FROM `board_file` WHERE `parent`=? and `oriName`='삽입 이미지'";
