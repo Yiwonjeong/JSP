@@ -22,10 +22,10 @@
 	UserBean sessUesr = (UserBean)session.getAttribute("sessUser");
 	
 	if(sessUesr == null){
-		// 로그인을 안했으면
+		// 로그인 X
 		pageContext.forward("./user/login.jsp");
 	} else {
-		// 로그인을 했으면
+		// 로그인 O
 		pageContext.forward("./list.jsp");
 	}
 	

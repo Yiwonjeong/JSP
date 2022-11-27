@@ -24,7 +24,7 @@
 	                <tr>
 	                    <td>비밀번호 확인</td>
 	                    <td>
-	                    	<input type="password" name="pass2" placeholder="비밀버호 입력확인">
+	                    	<input type="password" name="pass2" placeholder="비밀번호 입력확인">
 	                    	<span class="passResult"></span>
 	                    </td>
 	                </tr>

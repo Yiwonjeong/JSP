@@ -16,18 +16,18 @@
 	request.setCharacterEncoding("utf-8");
     String pg = request.getParameter("pg");
 
-	int limitStart = 0; // 현재 페이지에서 시작하는 게시물 시작값
-	int currentPage = 1; // 현재 페이지
-	int total = 0; // 게시물 총 개수
-	int lastPageNum = 0; // 마지막 페이지
-	int pageGroupCurent = 1; // 그룹 번호
-	int pageGroupStart = 1; // 그룹에서 첫페이지
-	int pageGroupEnd = 0; // 그룹에서 마지막페이지
-	int pageStartNum = 0; // 게시물의 번호 정렬
+	int limitStart = 0; 			// 현재 페이지에서 시작하는 게시물 시작값
+	int currentPage = 1; 			// 현재 페이지
+	int total = 0;					 // 게시물 총 개수
+	int lastPageNum = 0; 			// 마지막 페이지
+	int pageGroupCurent = 1; 		// 그룹 번호
+	int pageGroupStart = 1; 		// 그룹에서 첫페이지
+	int pageGroupEnd = 0;			 // 그룹에서 마지막페이지
+	int pageStartNum = 0; 			// 게시물의 번호 정렬
 	
 	ArticleDAO dao = ArticleDAO.getInstance();
 	
-	// 전체 게시물 갯수 구하기
+	// 전체 게시물 개수 구하기
 	total = dao.selectCountTotal();
 	
 	// 페이지 마지막 번호 계산
