@@ -3,9 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>게시판 User</title>
+    <title>Jboard2</title>
     <link rel="stylesheet" href="/Jboard2/css/style.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
     <div id="wrapper">

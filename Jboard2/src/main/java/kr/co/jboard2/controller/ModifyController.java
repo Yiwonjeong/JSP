@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/modify.do")
-public class ModifyController extends HttpServlet{
+public class ModifyController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
+	
 	@Override
 	public void init() throws ServletException {
 	}

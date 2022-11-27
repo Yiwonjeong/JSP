@@ -2,6 +2,6 @@
         <footer>
             <p>ⓒCopyright circle.or.kr</p>
         </footer>
-    </div>    
+    </div>
 </body>
 </html>

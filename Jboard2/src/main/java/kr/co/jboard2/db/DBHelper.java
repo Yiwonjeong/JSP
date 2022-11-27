@@ -3,15 +3,13 @@ package kr.co.jboard2.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class DBHelper {
-
+	
 	protected Connection conn = null;
 	protected PreparedStatement psmt = null;
 	protected Statement stmt = null;
@@ -29,7 +27,7 @@ public class DBHelper {
 	
 	public void close() {
 		try {
-			if(rs != null) rs.close();			
+			if(rs != null) rs.close();
 			if(stmt != null) stmt.close();
 			if(psmt != null) psmt.close();
 			if(conn != null) conn.close();
@@ -37,5 +35,4 @@ public class DBHelper {
 			e.printStackTrace();
 		}
 	}
-	
 }

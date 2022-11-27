@@ -2,6 +2,7 @@
 <jsp:include page="./_header.jsp"/>
 <script src="/Jboard2/js/emailAuth.js"></script>
 <script>
+	
 	$(function(){
 		
 		$('.btnNext').click(function(e){
@@ -35,6 +36,7 @@
 					
 				}
 			});
+			
 		});
 		
 	});
@@ -67,7 +69,7 @@
         
         <p>
             비밀번호를 찾고자 하는 아이디와 이메일을 입력해 주세요.<br>                    
-            회원가입 시 입력한 아이디와 이메일 주소가 같아야 인증번호를 받을 수 있습니다.<br>
+            회원가입시 입력한 아이디와 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.<br>
             인증번호를 입력 후 확인 버튼을 누르세요.
         </p>
 

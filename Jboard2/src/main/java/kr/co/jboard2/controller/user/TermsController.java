@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.co.jboard2.dao.UserDAO;
-import kr.co.jboard2.service.user.UserService;
+import kr.co.jboard2.service.UserService;
 import kr.co.jboard2.vo.TermsVO;
 
 @WebServlet("/user/terms.do")
@@ -22,17 +21,14 @@ public class TermsController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 	}
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		TermsVO vo = service.selectTerms();
 		req.setAttribute("vo", vo);
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/terms.jsp");
 		dispatcher.forward(req, resp);
 	}
-	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}

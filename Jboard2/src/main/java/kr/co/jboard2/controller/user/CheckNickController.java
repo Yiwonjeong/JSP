@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
-import kr.co.jboard2.service.user.UserService;
+import kr.co.jboard2.service.UserService;
+
 
 @WebServlet("/user/checkNick.do")
 public class CheckNickController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private UserService service = UserService.INSTANCE;
-	
+	private UserService service = UserService.INSTANCE;	
 	
 	@Override
 	public void init() throws ServletException {
