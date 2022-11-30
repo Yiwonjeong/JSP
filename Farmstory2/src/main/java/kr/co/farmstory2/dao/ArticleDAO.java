@@ -27,6 +27,8 @@ public class ArticleDAO extends DBHelper {
 	
 	
 	// CRUD
+	/*** write ***/
+	// 글 작성
 	public int insertArticle(ArticleVO ab) {
 		
 		int parent = 0;
@@ -64,7 +66,7 @@ public class ArticleDAO extends DBHelper {
 		}
 		return parent;
 	}
-	
+	// 파일 등록
 	public void insertFile(int parent, String newName, String fname) {
 		
 		try{
@@ -83,7 +85,6 @@ public class ArticleDAO extends DBHelper {
 			logger.error(e.getMessage());
 		}
 	}
-	
 	public void insertFiles(int parent, String[] fNames) {
 		
 		try{
@@ -113,6 +114,222 @@ public class ArticleDAO extends DBHelper {
 			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
+	}
+	
+	
+	/*** view ***/
+	// 파일 가져오기
+	public List<FileVO> selectFile(String parent) {
+		
+		List<FileVO> files = null;
+		
+		try{
+			logger.info("selectFile");
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_FILE);
+			psmt.setString(1, parent);
+			
+			rs = psmt.executeQuery();
+			
+			files = new ArrayList<>();
+			
+			while(rs.next()){
+				FileVO fb = new FileVO();
+				fb.setFno(rs.getInt(1));
+				fb.setParent(rs.getInt(2));
+				fb.setNewName(rs.getString(3));
+				fb.setOriName(rs.getString(4));
+				fb.setDownload(rs.getInt(5));
+				
+				files.add(fb);
+			}
+			
+			close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		
+		return files;
+	}
+	// 게시글 가져오기
+	public ArticleVO selectArticle(String no) {
+		
+		ArticleVO ab = null;
+		try{
+			logger.info("selectArticle...");
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_ARTICLE);
+			psmt.setString(1, no);
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()){
+				ab = new ArticleVO();
+				ab.setNo(rs.getInt(1));
+				ab.setParent(rs.getInt(2));
+				ab.setComment(rs.getInt(3));
+				ab.setCate(rs.getString(4));
+				ab.setTitle(rs.getString(5));
+				ab.setContent(rs.getString(6));
+				ab.setFile(rs.getInt(7));
+				ab.setHit(rs.getInt(8));
+				ab.setUid(rs.getString(9));
+				ab.setRegip(rs.getString(10));
+				ab.setRdate(rs.getString(11));
+				
+//				ab.setFno(rs.getInt(12));
+//				ab.setPno(rs.getInt(13));
+//				ab.setNewName(rs.getString(14));
+//				ab.setOriName(rs.getString(15));
+//				ab.setDownload(rs.getInt(16));
+			}
+			
+			close();
+			
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
+		logger.debug("ab: " + ab.toString());
+		return ab;
+	}
+	
+	
+	/*** delete ***/
+	// 게시글 삭제
+	public void deleteArticleFile(String no) {
+		
+		try {
+			logger.info("deleteArticleFile");
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.DELETE_ARTICLE_FILE);
+			psmt.setString(1, no);
+			psmt.setString(2, no);
+			
+			psmt.executeUpdate();
+			
+			close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+	}
+	public void deleteAllImg(String no) {
+		
+		try {
+			logger.info("deleteImg");
+			con = getConnection();
+			
+			String sql = "DELETE FROM `board_file` WHERE `parent`=? and `oriName`= '삽입 이미지'";
+			
+			PreparedStatement psmt = con.prepareStatement(sql);
+			psmt.setString(1, no);
+			
+			psmt.executeUpdate();
+		 
+			close();
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+	}
+	public void deleteSelectedImg(String no, String[] fileNames) {
+		try {
+			logger.info("deleteSelectedImg");
+			con = getConnection();
+			
+			String sql = "DELETE FROM `board_file` WHERE `parent`=? and `oriName`= '삽입 이미지'"
+					   + " and `newName` NOT IN (";
+			
+			for(int i=0; i<fileNames.length; i++) {
+				if(i == fileNames.length-1) {
+					sql += "?)";
+					break;
+				}
+				sql += "?,";
+			}
+			
+			PreparedStatement psmt = con.prepareStatement(sql);
+			
+			psmt.setString(1, no);
+			
+			int num = 2;
+			for(int i=0; i<fileNames.length; i++) {
+				psmt.setString(num++, fileNames[i]);
+			}
+			
+			psmt.executeUpdate();
+			
+		    close();
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+	}
+	public List<FileVO> selectImg(String parent) {
+		
+		List<FileVO> files = null;
+		
+		try{
+			logger.info("selectImg");
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.SELECT_FILE_IMG);
+			psmt.setString(1, parent);
+			
+			rs = psmt.executeQuery();
+			
+			files = new ArrayList<>();
+			
+			while(rs.next()){
+				FileVO fb = new FileVO();
+				fb.setFno(rs.getInt(1));
+				fb.setParent(rs.getInt(2));
+				fb.setNewName(rs.getString(3));
+				fb.setOriName(rs.getString(4));
+				fb.setDownload(rs.getInt(5));
+				
+				files.add(fb);
+			}
+			
+			close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		
+		return files;
+	}
+	
+	
+	/*** update ***/
+	// 게시글 수정
+	public int updateArticle(String no, String title, String content) {
+		
+		int result = 0;
+		
+		try{
+			logger.info("updateArticle");
+			con = getConnection();
+			psmt = con.prepareStatement(Sql.UPDATE_ARTICLE);
+			psmt.setString(1, title);
+			psmt.setString(2, content);
+			psmt.setString(3, no);
+			
+			psmt.executeUpdate();
+			
+			close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		
+		return result;
 	}
 	
 	
@@ -159,46 +376,7 @@ public class ArticleDAO extends DBHelper {
 		return article;
 	}
 	
-	public ArticleVO selectArticle(String no) {
-		
-		ArticleVO ab = null;
-		try{
-			logger.info("selectArticle...");
-			con = getConnection();
-			psmt = con.prepareStatement(Sql.SELECT_ARTICLE);
-			psmt.setString(1, no);
-			
-			rs = psmt.executeQuery();
-			
-			if(rs.next()){
-				ab = new ArticleVO();
-				ab.setNo(rs.getInt(1));
-				ab.setParent(rs.getInt(2));
-				ab.setComment(rs.getInt(3));
-				ab.setCate(rs.getString(4));
-				ab.setTitle(rs.getString(5));
-				ab.setContent(rs.getString(6));
-				ab.setFile(rs.getInt(7));
-				ab.setHit(rs.getInt(8));
-				ab.setUid(rs.getString(9));
-				ab.setRegip(rs.getString(10));
-				ab.setRdate(rs.getString(11));
-				
-//				ab.setFno(rs.getInt(12));
-//				ab.setPno(rs.getInt(13));
-//				ab.setNewName(rs.getString(14));
-//				ab.setOriName(rs.getString(15));
-//				ab.setDownload(rs.getInt(16));
-			}
-			
-			close();
-			
-		}catch(Exception e){
-			logger.error(e.getMessage());
-		}
-		logger.debug("ab: " + ab.toString());
-		return ab;
-	}
+	
 	
 	// 모든 게시물의 수를 가져오기
 	public int selectCountTotal() {
@@ -326,40 +504,7 @@ public class ArticleDAO extends DBHelper {
 		return latests;
 	}
 	
-	public List<FileVO> selectFile(String parent) {
-		
-		List<FileVO> files = null;
-		
-		try{
-			logger.info("selectFile");
-			con = getConnection();
-			psmt = con.prepareStatement(Sql.SELECT_FILE);
-			psmt.setString(1, parent);
-			
-			rs = psmt.executeQuery();
-			
-			files = new ArrayList<>();
-			
-			while(rs.next()){
-				FileVO fb = new FileVO();
-				fb.setFno(rs.getInt(1));
-				fb.setParent(rs.getInt(2));
-				fb.setNewName(rs.getString(3));
-				fb.setOriName(rs.getString(4));
-				fb.setDownload(rs.getInt(5));
-				
-				files.add(fb);
-			}
-			
-			close();
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
-		
-		return files;
-	}
+	
 	
 	public int selectCountTotal(String cate) {
 		
@@ -420,29 +565,7 @@ public class ArticleDAO extends DBHelper {
 		return comments;
 	}
 	
-	public int updateArticle(String no, String title, String content) {
-		
-		int result = 0;
-		
-		try{
-			logger.info("updateArticle");
-			con = getConnection();
-			psmt = con.prepareStatement(Sql.UPDATE_ARTICLE);
-			psmt.setString(1, title);
-			psmt.setString(2, content);
-			psmt.setString(3, no);
-			
-			psmt.executeUpdate();
-			
-			close();
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
-		
-		return result;
-	}
+	
 	
 	public void updateArticleHit(String no) {
 		
@@ -590,114 +713,7 @@ public class ArticleDAO extends DBHelper {
 		}
 	}
 	
-	// 게시글, 댓글, 파일 데이터 삭제
-	public void deleteArticleFile(String no) {
-		
-		try {
-			logger.info("deleteArticleFile");
-			con = getConnection();
-			psmt = con.prepareStatement(Sql.DELETE_ARTICLE_FILE);
-			psmt.setString(1, no);
-			psmt.setString(2, no);
-			
-			psmt.executeUpdate();
-			
-			close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
-	}
 	
-	public void deleteAllImg(String no) {
-		
-		try {
-			logger.info("deleteImg");
-			con = getConnection();
-			
-			String sql = "DELETE FROM `board_file` WHERE `parent`=? and `oriName`= '삽입 이미지'";
-			
-			PreparedStatement psmt = con.prepareStatement(sql);
-			psmt.setString(1, no);
-			
-			psmt.executeUpdate();
-		 
-			close();
-		    
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
-	}
 	
-	public void deleteSelectedImg(String no, String[] fileNames) {
-		try {
-			logger.info("deleteSelectedImg");
-			con = getConnection();
-			
-			String sql = "DELETE FROM `board_file` WHERE `parent`=? and `oriName`= '삽입 이미지'"
-					   + " and `newName` NOT IN (";
-			
-			for(int i=0; i<fileNames.length; i++) {
-				if(i == fileNames.length-1) {
-					sql += "?)";
-					break;
-				}
-				sql += "?,";
-			}
-			
-			PreparedStatement psmt = con.prepareStatement(sql);
-			
-			psmt.setString(1, no);
-			
-			int num = 2;
-			for(int i=0; i<fileNames.length; i++) {
-				psmt.setString(num++, fileNames[i]);
-			}
-			
-			psmt.executeUpdate();
-			
-		    close();
-		    
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
-	}
 	
-	public List<FileVO> selectImg(String parent) {
-		
-		List<FileVO> files = null;
-		
-		try{
-			logger.info("selectImg");
-			con = getConnection();
-			psmt = con.prepareStatement(Sql.SELECT_FILE_IMG);
-			psmt.setString(1, parent);
-			
-			rs = psmt.executeQuery();
-			
-			files = new ArrayList<>();
-			
-			while(rs.next()){
-				FileVO fb = new FileVO();
-				fb.setFno(rs.getInt(1));
-				fb.setParent(rs.getInt(2));
-				fb.setNewName(rs.getString(3));
-				fb.setOriName(rs.getString(4));
-				fb.setDownload(rs.getInt(5));
-				
-				files.add(fb);
-			}
-			
-			close();
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
-		
-		return files;
-	}
 }

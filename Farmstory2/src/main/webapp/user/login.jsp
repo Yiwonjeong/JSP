@@ -1,80 +1,32 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="../_header.jsp"/>
 <main id="user">
-    <section class="register">
-
-        <form action="#">
-            <table border="1">
-                <caption>사이트 이용정보 입력</caption>
+    <section class="login">
+        <form action="/Farmstory2/user/login.do" method="post">
+            <table border="0">
                 <tr>
-                    <td>아이디</td>
-                    <td>
-                        <input type="text" name="uid" placeholder="아이디 입력"/>
-                        <button type="button"><img src="./img/chk_id.gif" alt="중복확인"/></button>
-                        <span class="uidResult"></span>
-                    </td>
+                    <td><img src="/Farmstory2/img/login_ico_id.png" alt="아이디"/></td>
+                    <td><input type="text" name="uid" placeholder=" 아이디 입력"/></td>
                 </tr>
                 <tr>
-                    <td>비밀번호</td>
-                    <td><input type="password" name="pass1" placeholder="비밀번호 입력"/></td>
-                </tr>
-                <tr>
-                    <td>비밀번호 확인</td>
-                    <td><input type="password" name="pass2" placeholder="비밀번호 입력 확인"/></td>
+                    <td><img src="/Farmstory2/img/login_ico_pw.png" alt="비밀번호"/></td>
+                    <td><input type="password" name="pass" placeholder=" 비밀번호 입력"/></td>
                 </tr>
             </table>
-
-            <table border="1">
-                <caption>개인정보 입력</caption>
-                <tr>
-                    <td>이름</td>
-                    <td>
-                        <input type="text" name="name" placeholder="이름 입력"/>                        
-                    </td>
-                </tr>
-                <tr>
-                    <td>별명</td>
-                    <td>
-                        <p class="nickInfo">공백없는 한글, 영문, 숫자 입력</p>
-                        <input type="text" name="nick" placeholder="별명 입력"/>
-                        <button type="button"><img src="./img/chk_id.gif" alt="중복확인"/></button>
-                        <span class="nickResult"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>이메일</td>
-                    <td>
-                        
-                        <input type="email" name="email" placeholder="이메일 입력"/>
-                        <button type="button"><img src="./img/chk_auth.gif" alt="인증번호 받기"/></button>
-                        <div class="auth">
-                            <input type="text" name="auth" placeholder="인증번호 입력"/>
-                            <button type="button"><img src="./img/chk_confirm.gif" alt="확인"/></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>휴대폰</td>
-                    <td><input type="text" name="hp" placeholder="휴대폰 입력"/></td>
-                </tr>
-                <tr>
-                    <td>주소</td>
-                    <td>
-                        <input type="text" name="zip" placeholder="우편번호"/>
-                        <button type="button"><img src="./img/chk_post.gif" alt="우편번호찾기"/></button>
-                        <input type="text" name="addr1" placeholder="주소 검색"/>
-                        <input type="text" name="addr2" placeholder="상세주소 입력"/>
-                    </td>
-                </tr>
-            </table>
-
-            <div>
-                <a href="./login.do" class="btn btnCancel">취소</a>
-                <input type="submit" value="회원가입" class="btn btnRegister"/>
-            </div>
-
+            <input type="submit" value="로그인" class="btnLogin"/>
+            <label><input type="checkbox" name="saveUid">아이디 기억하기</label>
         </form>
-
+        <div>
+            <h3>회원 로그인 안내</h3>
+            <p>
+                아직 회원이 아니시면 회원으로 가입하세요.
+            </p>
+            <div style="text-align: right;">
+                <a href="/Farmstory2/user/findId.do">아이디 |</a>
+                <a href="/Farmstory2/user/findPw.do">비밀번호찾기 |</a>
+                <a href="/Farmstory2/user/terms.do">회원가입</a>
+            </div>                    
+        </div>
     </section>
 </main>
 <jsp:include page="../_footer.jsp"/>

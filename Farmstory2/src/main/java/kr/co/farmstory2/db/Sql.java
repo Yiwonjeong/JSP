@@ -2,7 +2,17 @@ package kr.co.farmstory2.db;
 
 public class Sql {
 	// user
-		public static final String INSERT_USER = "INSERT INTO `board_user` SET "
+	/*** register ***/
+	// 약관 동의
+	public static final String SELECT_TERMS = "SELECT * FROM `board_terms`";
+	// 아이디 중복 확인
+	public static final String SELECT_COUNT_UID = "SELECT COUNT(`uid`) FROM `board_user` WHERE `uid`=?";
+	// 닉네임 중복 확인
+	public static final String SELECT_COUNT_NICK = "SELECT COUNT(`nick`) FROM `board_user` WHERE `nick`=?";
+	// 이메일
+	public static final String CHECK_EMAIL = "SELECT * FROM `board_user` WHERE `email` = ?";
+	// 회원가입
+	public static final String INSERT_USER = "INSERT INTO `board_user` SET "
 												+ "`uid`=?,"
 												+ "`pass`=SHA2(?, 256),"
 												+ "`name`=?,"
@@ -15,12 +25,30 @@ public class Sql {
 												+ "`regip`=?,"
 												+ "`rdate`= NOW()";
 		
-		public static final String SELECT_TERMS = "SELECT * FROM `board_terms`";
-		public static final String SELECT_USER = "SELECT * FROM `board_user` WHERE `uid`= ? and `pass`= SHA2(?, 256)";
-		public static final String SELECT_COUNT_UID = "SELECT COUNT(`uid`) FROM `board_user` WHERE `uid`=?";
-		public static final String SELECT_COUNT_NICK = "SELECT COUNT(`nick`) FROM `board_user` WHERE `nick`=?";
+	/*** login ***/
+	// 아이디 패스워드 확인
+	public static final String SELECT_USER = "SELECT * FROM `board_user` WHERE `uid`= ? and `pass`= SHA2(?, 256)";
+	// 자동 로그인 
+	public static final String SELECT_USER_BY_SESSID = "SELECT * FROM `board_user` WHERE `sessId`=? AND `sessLimitDate` > NOW()";
+	// 자동 로그인 세션 만료 연장
+	public static final String UPDATE_USER_FOR_SESS_LIMIT_DATE = "UPDATE `board_user` SET `sessLimitDate` = DATE_ADD(NOW(), INTERVAL 3 DAY) WHERE `sessId`=?";
+	// 자동 로그인 sessID DB 저장
+	public static final String UPDATE_USER_FOR_SESSION = "UPDATE `board_user` SET `sessId`=?, `sessLimitDate` = DATE_ADD(NOW(), INTERVAL 3 DAY) WHERE `uid`=?";
+	
+	/*** 아이디 찾기 ***/
+	public static final String SELECT_USER_FOR_FIND_ID = "SELECT * FROM `board_user` WHERE `name`= ? and `email` = ?";
+	
+	/*** 비밀번호 찾기 ***/
+	public static final String SELECT_USER_FOR_FIND_PW = "SELECT * FROM `board_user` WHERE `uid`= ? and `email` = ?";
+	
+	/*** 비밀번호 변경 ***/
+	public static final String UPDATE_USER_PW = "UPDATE `board_user` SET `pass`=SHA2(?, 256) WHERE `uid`=?";
+	
+	/*** logout ***/
+	public static final String UPDATE_USER_FOR_SESSION_OUT = "UPDATE `board_user` SET `sessId`=NULL, `sessLimitDate`=NULL WHERE `uid`=?";
 		
-		// board
+		
+	// board
 		public static final String INSERT_ARTICLE = "INSERT INTO `board_article` SET "
 													+ "`cate`=?, "
 													+ "`title`=?, "

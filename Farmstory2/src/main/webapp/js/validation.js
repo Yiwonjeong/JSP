@@ -30,13 +30,19 @@
 			
 			let uid = $('input[name=uid]').val(); // uid 입력값
 			
+			console.log('here1 : ' + uid);
+			
 			if(isUidok){ // 이미 확인한 아이디값으로 중복확인 버튼을 다시 클릭시 중북확인을 실행하는 것은 불필요하기 위한 제동장치 
 				return;
 			}
 			
+			console.log('here2');
+			
 			let jsonData = { // uid 값을 JSON형태로 변환한다.
 					"uid":uid 
 			};
+			
+			console.log('here3 : ' + jsonData);
 			
 			if(!uid.match(reUid)){ // 유효성 검사  
 				isUidok = false;
@@ -51,7 +57,7 @@
 			
 			setTimeout(function() {
 				$.ajax({
-					url:'./proc/checkUid.jsp',
+					url:'/Farmstory2/user/checkUid.do',
 					method: 'get',
 					data: jsonData,
 					dataType: 'json',
@@ -118,13 +124,19 @@
 			
 			let nick = $('input[name=nick]').val(); // nick 입력값
 			
+			console.log('here1 : ' + nick);
+			
 			if(isNickok){
 				return;
 			}
 			
+			console.log('here2');
+			
 			let jsonData = {
 					"nick":nick 
 			};
+			
+			console.log('here3: '+jsonData);
 			
 			if(!nick.match(reNick)){
 				isNickok = false;
@@ -136,7 +148,7 @@
 			
 			setTimeout(function() {
 				$.ajax({
-					url:'./proc/checkNick.jsp',
+					url:'/Farmstory2/user/checkNick.do',
 					method: 'get',
 					data: jsonData,
 					dataType: 'json',
@@ -169,6 +181,73 @@
 			}
 		});
 		
+		// 인증번호 숫자 유효성 체크
+		$('input[name=auth]').keyup(function () {
+			authNumber = $(this).val();
+			if(!authNumber.match(reAuth)){
+				$(this).val('');
+				alert('숫자만 입력해주세요.');
+				return;
+			} 
+		});
+		// 이메일 인증 검사하기
+		$('#btnEmailAuth').click(function () {
+			email = $('input[name=email]').val();
+			
+			if(!email){
+				alert('이메일 주소를 입력 해주세요.');
+				return;
+			}
+			
+			if(!isEmailok){
+				alert('유효하지 않은 이메일입니다.');
+				return;
+			}
+			
+			if(isClick){ // 중복확인을 이미 한번 누른 상태
+				alert('이미 인증번호가 전송 중입니다. \n전송완료 메시지가 나타나면 입력한 이메일을 확인 해주세요.');
+				return;
+			}
+			
+			isClick = true; // 중복확인 버튼을 눌렀으면 true;
+			
+			$('.auth').show();
+			$('.emailResult').css('color', 'black').text('...'); // 중복 확인 클릭시 로딩 중 표시
+			
+			$.ajax({
+				url: 'Farmstory2/user/emailAuth.do',
+				method:'get',
+				data: {"email":email},
+				dataType:'json',
+				success: function (data) {
+					// console.log(data);
+					if(data.status == 1){
+						// 메일발송 성공
+						emailCode = data.code;
+						
+						$('.emailResult').css("color", "black").text('인증코드를 전송했습니다.');
+					} else {
+						// 메일발송 실패
+						$('.emailResult').css("color", "red").text('이미 사용 중인 이메일입니다.');
+						isClick = false;
+					}
+				}
+			});
+		});
+		
+		// 이메일 인증코드 확인
+		$('#btnEmailConfirm').click(function () {
+			let code = $('input[name=auth]').val();
+			
+			if(code == emailCode){
+				isEmailAuthok = true;
+				$('.emailResult').css('color', 'green').text('이메일이 인증되었습니다.');
+			} else {
+				isEmailAuthok = false;
+				$('.emailResult').css('color', 'red').text('인증번호가 일치하지 않습니다.');
+			}
+		});
+		
 		// 휴대폰 검사하기
 		$('input[name=hp]').focusout(function () {
 			
@@ -187,7 +266,7 @@
 		
 		$('.register > form').submit(function () {
 			// 아이디 검증
-			if(!isUidok){
+			if(!isUidok){ 
 				alert('아이디를 확인 하십시요.');
 				return false;
 			}

@@ -8,7 +8,7 @@
             <img src="../img/sub_aside_cate2_tit.png" alt="장보기"/>
 
             <ul class="lnb">
-                <li class="on"><a href="Farmstory2/market.do">장보기</a></li>
+                <li class="on"><a href="/Farmstory2/market.do">장보기</a></li>
             </ul>
         </aside>
         <article>
@@ -20,7 +20,7 @@
             </nav>
 
             <!-- 내용 시작 -->
-            <img src="Farmstory2/img/board_list.png" alt="">
+            <img src="/Farmstory2/img/board_list.png" alt="">
 
             <!-- 내용 끝 -->
 
