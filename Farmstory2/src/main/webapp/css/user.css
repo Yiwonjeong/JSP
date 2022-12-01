@@ -194,6 +194,10 @@
     display: none;
     margin-top: 6px;
 }
+#user > .register .emailResult{
+	display: block;
+	margin-top: 5px;
+}
 
 /* 버튼 공통 */
  .btn { 
@@ -230,6 +234,7 @@
     padding: 4px;    
     border: 1px solid #bebebe; 
     text-align: center;
+    cursor: pointer;
 }
 #user>.terms>p>a.btnCancel {}
 #user>.terms>p>a.btnNext {

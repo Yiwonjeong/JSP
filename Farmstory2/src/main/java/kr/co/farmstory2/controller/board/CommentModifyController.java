@@ -1,30 +1,25 @@
-package kr.co.farmstory2.controller.user;
+package kr.co.farmstory2.controller.board;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
-import kr.co.farmstory2.service.UserService;
-import kr.co.farmstory2.vo.UserVO;
+import kr.co.farmstory2.service.ArticleService;
 
-
-@WebServlet("/user/findPw.do")
-public class FindPwController extends HttpServlet {
-
+@WebServlet("/board/commentModify.do")
+public class CommentModifyController extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-	private UserService service = UserService.INSTANCE;
+	private ArticleService service = ArticleService.INSTANCE;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
@@ -33,34 +28,20 @@ public class FindPwController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		logger.info("FindPwController doGet...");
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/findPw.jsp");
-		dispatcher.forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		logger.info("FindPwController doPost...");
+		String no = req.getParameter("no");
+		String content = req.getParameter("content");
 		
-		String uid   = req.getParameter("uid");
-		String email = req.getParameter("email");
-		
-		UserVO vo = service.selectUserForFindPw(uid, email);
+		int result = service.updateComment(no, content);
 		
 		JsonObject json = new JsonObject();
-		
-		if(vo != null) {
-			json.addProperty("result", 1);
-			
-			HttpSession sess = req.getSession();
-			sess.setAttribute("sessUserForPw", vo);
-			
-		}else {
-			json.addProperty("result", 0);
-		}
-		
+		json.addProperty("result", result);
+
 		PrintWriter writer = resp.getWriter();
 		writer.print(json.toString());
 	}
+	
 }

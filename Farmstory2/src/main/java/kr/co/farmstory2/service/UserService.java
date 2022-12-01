@@ -1,4 +1,4 @@
-package kr.co.farmstroy2.service;
+package kr.co.farmstory2.service;
 
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
@@ -77,7 +77,7 @@ public enum UserService {
 	}
 	
 	/*** 비밀번호 찾기 ***/
-	public int selectUserForFindPw(String uid, String email) {
+	public UserVO selectUserForFindPw(String uid, String email) {
 		return dao.selectUserForFindPw(uid, email);
 	}
 	

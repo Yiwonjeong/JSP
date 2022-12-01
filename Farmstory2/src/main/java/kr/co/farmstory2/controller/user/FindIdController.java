@@ -13,11 +13,15 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.JsonObject;
 
+import kr.co.farmstory2.service.UserService;
+import kr.co.farmstory2.vo.UserVO;
+
 
 @WebServlet("/user/findId.do")
 public class FindIdController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private UserService service = UserService.INSTANCE;
 	
 	@Override
 	public void init() throws ServletException {
@@ -31,6 +35,26 @@ public class FindIdController extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String name  = req.getParameter("name");
+		String email = req.getParameter("email");
+		
+		UserVO vo = service.selectUserForFindId(name, email);
+		
+		JsonObject json = new JsonObject();
+		
+		if(vo != null) {
+			json.addProperty("result", 1);
+			
+			HttpSession sess = req.getSession();
+			sess.setAttribute("sessUserForId", vo);
+			
+		}else {
+			json.addProperty("result", 0);
+		}
+		
+		PrintWriter writer = resp.getWriter();
+		writer.print(json.toString());
 		
 	}
 }

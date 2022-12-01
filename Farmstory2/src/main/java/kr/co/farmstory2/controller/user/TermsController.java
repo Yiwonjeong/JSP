@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.farmstory2.service.UserService;
 import kr.co.farmstory2.vo.TermsVO;
-import kr.co.farmstroy2.service.UserService;
 
 
 @WebServlet("/user/terms.do")

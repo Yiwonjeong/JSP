@@ -15,6 +15,7 @@ public class ArticleVO {
 	private String uid;
 	private String regip;
 	private String rdate;
+	private int download;
 	
 	// 추가 필드 
 	private String fname;
@@ -61,7 +62,6 @@ public class ArticleVO {
 	public void setDownload(int download) {
 		this.download = download;
 	}
-	private int download;
 	
 	public String getNick() {
 		return nick;

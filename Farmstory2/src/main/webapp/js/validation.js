@@ -10,6 +10,7 @@
 	let reNick  = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]*$/;
 	let reEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 	let reHp    = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
+	let reAuth  = /^[0-9]+$/;
 	
 	// 폼 데이터 검증 결과 상태변수
 	let isUidok = false;
@@ -17,7 +18,12 @@
 	let isNameok = false;
 	let isNickok = false;
 	let isEmailok = false;
+	let isEmailAuthOk = false;
 	let isHpok = false;
+	
+	let email;
+	let emailCode = -999999999;
+	let isClick = false;
 	
 	$(function () {
 		// 아이디 검사하기(별명 항목도 동일하다)
@@ -30,19 +36,17 @@
 			
 			let uid = $('input[name=uid]').val(); // uid 입력값
 			
-			console.log('here1 : ' + uid);
+			console.log('uid : ' + uid);
 			
 			if(isUidok){ // 이미 확인한 아이디값으로 중복확인 버튼을 다시 클릭시 중북확인을 실행하는 것은 불필요하기 위한 제동장치 
 				return;
 			}
 			
-			console.log('here2');
 			
 			let jsonData = { // uid 값을 JSON형태로 변환한다.
 					"uid":uid 
 			};
 			
-			console.log('here3 : ' + jsonData);
 			
 			if(!uid.match(reUid)){ // 유효성 검사  
 				isUidok = false;
@@ -83,6 +87,9 @@
 			let pass1 = $('input[name=pass1]').val();
 			let pass2 = $('input[name=pass2]').val();
 			
+			console.log('pass1: '+pass1);
+			console.log('pass2: '+pass2);
+			
 			if(pass2.match(rePass)){
 				if(pass1 == pass2){
 					isPassok = true;
@@ -105,6 +112,8 @@
 		$('input[name=name]').focusout(function () {
 			let name = $(this).val();
 			
+			console.log('name: '+name);
+			
 			if(name.match(reName)){
 				isNameok = true;
 				$('.nameResult').text(' ');
@@ -124,19 +133,17 @@
 			
 			let nick = $('input[name=nick]').val(); // nick 입력값
 			
-			console.log('here1 : ' + nick);
+			console.log('nick : ' + nick);
 			
 			if(isNickok){
 				return;
 			}
 			
-			console.log('here2');
 			
 			let jsonData = {
 					"nick":nick 
 			};
 			
-			console.log('here3: '+jsonData);
 			
 			if(!nick.match(reNick)){
 				isNickok = false;
@@ -172,6 +179,8 @@
 			
 			let email = $(this).val();
 			
+			console.log('email: ' +email);
+			
 			if(email.match(reEmail)){
 				isEmailok = true;
 				$('.emailResult').text('');
@@ -190,12 +199,15 @@
 				return;
 			} 
 		});
-		// 이메일 인증 검사하기
+		// 이메일 '인증번호받기' 클릭
 		$('#btnEmailAuth').click(function () {
+			$(this).hide();	
 			email = $('input[name=email]').val();
 			
+			console.log('btnEmailAuth : ' + email);
+			
 			if(!email){
-				alert('이메일 주소를 입력 해주세요.');
+				alert('이메일을 입력 해주세요.');
 				return;
 			}
 			
@@ -204,7 +216,7 @@
 				return;
 			}
 			
-			if(isClick){ // 중복확인을 이미 한번 누른 상태
+			if(isClick){ // 중복확인을 이미 한번 누른 상태이면
 				alert('이미 인증번호가 전송 중입니다. \n전송완료 메시지가 나타나면 입력한 이메일을 확인 해주세요.');
 				return;
 			}
@@ -212,19 +224,21 @@
 			isClick = true; // 중복확인 버튼을 눌렀으면 true;
 			
 			$('.auth').show();
-			$('.emailResult').css('color', 'black').text('...'); // 중복 확인 클릭시 로딩 중 표시
+			$('.emailResult').css('color', 'black').text('...'); // 중복확인 클릭시 로딩중을 표시
 			
-			$.ajax({
-				url: 'Farmstory2/user/emailAuth.do',
+			setTimeout(function(){
+				$.ajax({
+				url: '/Farmstory2/user/emailAuth.do',
 				method:'get',
 				data: {"email":email},
 				dataType:'json',
 				success: function (data) {
-					// console.log(data);
+					
+					console.log(data);
+					
 					if(data.status == 1){
 						// 메일발송 성공
 						emailCode = data.code;
-						
 						$('.emailResult').css("color", "black").text('인증코드를 전송했습니다.');
 					} else {
 						// 메일발송 실패
@@ -233,6 +247,8 @@
 					}
 				}
 			});
+			});
+			
 		});
 		
 		// 이메일 인증코드 확인
@@ -252,6 +268,8 @@
 		$('input[name=hp]').focusout(function () {
 			
 			let hp = $(this).val();
+			
+			console.log('hp: '+hp);
 			
 			if(hp.match(reHp)){
 				isHpok = true;

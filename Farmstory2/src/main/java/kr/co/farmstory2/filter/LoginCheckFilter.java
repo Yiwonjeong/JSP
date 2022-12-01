@@ -1,4 +1,4 @@
-package kr.co.farmstroy2.filter;
+package kr.co.farmstory2.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ public class LoginCheckFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// 필터를 동작할 요청주소 리스트 구성
 		uriList = new ArrayList<>();
-		uriList.add("/board/list.do");
-		uriList.add("/board/write.do");
-		uriList.add("/board/modify.do");
-		uriList.add("/board/view.do");
+		uriList.add("/Farmstory2/board/list.do");
+		uriList.add("/Farmstory2/board/write.do");
+		uriList.add("/Farmstory2/board/modify.do");
+		uriList.add("/Farmstory2/board/view.do");
 	}
 	
 	@Override
@@ -42,6 +42,7 @@ public class LoginCheckFilter implements Filter {
 		logger.info("LoginCheckFilter...");
 		
 		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse)response;
 		String uri = req.getRequestURI();
 
 		HttpSession sess = req.getSession();
@@ -50,11 +51,11 @@ public class LoginCheckFilter implements Filter {
 		if(uriList.contains(uri)) {
 			// 로그인을 하지 않았을 경우
 			if(sessUser == null) {
-				((HttpServletResponse) response).sendRedirect("/user/login.do");
+				resp.sendRedirect("/Farmstory2/user/login.do");
 				return;
 			}
 			
-		}else if(uri.contains("/user/login.do")) {
+		}else if(uri.contains("/Farmstory2/user/login.do")) {
 			// 로그인을 했을 경우
 			if(sessUser != null) {
 				((HttpServletResponse) response).sendRedirect("/Farmstory2/");

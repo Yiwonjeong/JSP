@@ -52,13 +52,12 @@
                 <tr>
                     <td>이메일</td>
                     <td>
-                        
                         <input type="email" name="email" placeholder="이메일 입력"/>
                         <button type="button" id="btnEmailAuth"><img src="/Farmstory2/img/chk_auth.gif" alt="인증번호 받기"/></button>
                         <div class="auth">
                             <input type="text" name="auth" placeholder="인증번호 입력"/>
                             <button type="button" id="btnEmailConfirm"><img src="/Farmstory2/img/chk_confirm.gif" alt="확인"/></button>
-                            <br/><span class="emailResult"></span>
+                       		<br/><span class="emailResult"></span>
                         </div>
                     </td>
                 </tr>

@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import kr.co.farmstory2.service.UserService;
 import kr.co.farmstory2.vo.UserVO;
-import kr.co.farmstroy2.service.UserService;
 
 
 @WebServlet("/user/register.do")
@@ -18,12 +21,16 @@ public class RegisterController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private UserService service = UserService.INSTANCE;
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
 	public void init() throws ServletException {
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		logger.info("RegisterController doGet...");
+		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/register.jsp");
 		dispatcher.forward(req, resp);
 	}
@@ -31,10 +38,12 @@ public class RegisterController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		logger.info("RegisterController doPost...");
+
+		
 		// 데이터 수신
 		String uid = req.getParameter("uid");
-		String pass1 = req.getParameter("pass1");
-		String pass2 = req.getParameter("pass2");
+		String pass = req.getParameter("pass1");
 		String name = req.getParameter("name");
 		String nick = req.getParameter("nick");
 		String email = req.getParameter("email");
@@ -47,7 +56,7 @@ public class RegisterController extends HttpServlet {
 		// VO 데이터 생성
 		UserVO vo = new UserVO();
 		vo.setUid(uid);
-		vo.setPass(pass1);
+		vo.setPass(pass);
 		vo.setName(name);
 		vo.setNick(nick);
 		vo.setEmail(email);

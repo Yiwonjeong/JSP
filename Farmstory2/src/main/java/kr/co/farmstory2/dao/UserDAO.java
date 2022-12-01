@@ -137,7 +137,7 @@ public class UserDAO extends DBHelper{
 			UserVO ub = null;
 
 			try{
-				// logger.info("selectUser..."); error의 원인 출처(selectUser임)을 알기 위해
+				logger.info("selectUser...");
 				
 				con = getConnection();
 				psmt = con.prepareStatement(Sql.SELECT_USER);
@@ -166,10 +166,8 @@ public class UserDAO extends DBHelper{
 				close();
 				
 			}catch(Exception e){
-				e.printStackTrace();
-				//logger.error(e.getMessage());
+				logger.error(e.getMessage());
 			}
-			// logger.debug("ub: "+ub);
 			return ub;
 		}
 		// 자동 로그인 
@@ -234,11 +232,13 @@ public class UserDAO extends DBHelper{
 		}
 		
 		/*** 아이디 찾기 ***/
-		// 이름, 이메일로 회원정보 확인
+		// 이름, 이메일 -> 아이디 찾기
 		public UserVO selectUserForFindId(String name, String email) {
+			
 			UserVO vo = null;
 			try {
 				logger.info("selectUserForFindId...");
+				
 				con = getConnection();
 				psmt = con.prepareStatement(Sql.SELECT_USER_FOR_FIND_ID);
 				psmt.setString(1, name);
@@ -247,10 +247,10 @@ public class UserDAO extends DBHelper{
 				
 				if(rs.next()) {
 					vo = new UserVO();
-					vo.setUid(rs.getString("uid"));
-					vo.setName(rs.getString("name"));
-					vo.setEmail(rs.getString("email"));
-					vo.setRdate(rs.getString("rdate"));
+					vo.setUid(rs.getString(1));
+					vo.setName(rs.getString(3));
+					vo.setEmail(rs.getString(5));
+					vo.setRdate(rs.getString(12));
 				}
 				
 				close();
@@ -262,8 +262,10 @@ public class UserDAO extends DBHelper{
 		}
 		
 		/*** 비밀번호 찾기 ***/
-		public int selectUserForFindPw(String uid, String email) {
-			int result = 0;
+		public UserVO selectUserForFindPw(String uid, String email) {
+			
+			UserVO vo = null;
+			
 			try {
 				logger.info("selectUserForFindPw...");
 				con = getConnection();
@@ -272,19 +274,23 @@ public class UserDAO extends DBHelper{
 				psmt.setString(2, email);
 				rs = psmt.executeQuery();
 				
-				if(rs.next()) result = 1;
+				if(rs.next()) {
+					vo = new UserVO();
+					vo.setUid(rs.getString(1));
+				}
 				
 				close();
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}
-			logger.debug("result : " + result);
-			return result;
+			return vo;
 		}
 		
 		/*** 비밀번호 변경 ***/
 		// 비밀번호 변경
 		public int updateUserPw(String uid, String pass) {
+			
+			UserVO vo = null;
 			int result = 0;
 			try {
 				logger.info("updateUserPw...");
@@ -295,6 +301,7 @@ public class UserDAO extends DBHelper{
 				result = psmt.executeUpdate();
 			
 				close();
+				
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}
