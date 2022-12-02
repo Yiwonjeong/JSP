@@ -29,6 +29,8 @@ public class CommentDeleteController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		logger.info("commentDelete");
+		
 		String no = req.getParameter("no");
 		String parent = req.getParameter("parent");
 		

@@ -7,7 +7,7 @@ function commentWrite(){
 	
 	$(function(){
 		
-		$('.commentForm > form').submit(function (e) {
+		$('.commentForm > form').submit(function(e) {
 			let no = $(this).children('input[name=no]').val();
 			let uid = $(this).children('input[name=uid]').val();
 			let textarea = $(this).children('textarea[name=content]');
@@ -65,10 +65,10 @@ function commentModify(){
 	
 	$(function(){
 		
-		$(document).on('click', '.modify', function (e) {
+		$(document).on('click', '.modify', function(e) {
 			e.preventDefault();
-			let text = $(this).text();
-			p_Tag = $(this).parent().prev();
+			let txt = $(this).text();
+			p_tag = $(this).parent().prev();
 			
 			if(txt == '수정'){
 				$(this).text('수정완료');
@@ -112,7 +112,7 @@ function commentDelete(){
 	
 	$(function(){
 		
-		$(document).on('click', '.remove', function (e) {
+		$(document).on('click', '.remove', function(e) {
 			e.preventDefault();
 			
 			let isDeleteOk = confirm('정말 삭제하시겠습니까?');
@@ -127,7 +127,7 @@ function commentDelete(){
 							
 				$.ajax({
 					url:'/Farmstory2/board/commentDelete.do',
-					type: 'POST',
+					type: 'GET',
 					data: jsonData,
 					dataType: 'json',
 					success: function (data) {
@@ -138,7 +138,7 @@ function commentDelete(){
 					}
 				});
 			}
-		})
+		});
 		
 	});
 }

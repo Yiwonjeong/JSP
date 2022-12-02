@@ -32,6 +32,7 @@ public class CommentModifyController extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		logger.info("modifyComment...");
 		String no = req.getParameter("no");
 		String content = req.getParameter("content");
 		

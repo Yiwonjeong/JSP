@@ -70,7 +70,7 @@
            	    <a href="/Farmstory2/board/modify.do?no=${vo.no}&pg=${pg}&group=${group}&cate=${cate}" class="btn btnModify">수정</a>
         	</c:if>
             
-            <a href="/Farmstory2/list.do?pg=${pg}&group=${group}&cate=${cate}" class="btn btnList">목록</a>
+            <a href="/Farmstory2/board/list.do?pg=${pg}&group=${group}&cate=${cate}" class="btn btnList">목록</a>
         </div>
 
         <!-- 댓글목록 -->

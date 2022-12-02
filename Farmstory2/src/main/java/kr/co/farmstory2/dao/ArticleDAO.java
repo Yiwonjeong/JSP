@@ -34,11 +34,12 @@ Logger logger = LoggerFactory.getLogger(this.getClass());
 			psmt = con.prepareStatement(Sql.INSERT_ARTICLE);
 			stmt = con.createStatement();
 			
-			psmt.setString(1, article.getTitle());
-			psmt.setString(2, article.getContent());
-			psmt.setInt(3, article.getFname() == null ? 0:1);
-			psmt.setString(4, article.getUid());
-			psmt.setString(5, article.getRegip());
+			psmt.setString(1, article.getCate());
+			psmt.setString(2, article.getTitle());
+			psmt.setString(3, article.getContent());
+			psmt.setInt(4, article.getFname() == null ? 0:1);
+			psmt.setString(5, article.getUid());
+			psmt.setString(6, article.getRegip());
 			
 			psmt.executeUpdate();
 			rs = stmt.executeQuery(Sql.SELECT_MAX_NO);
@@ -448,13 +449,16 @@ Logger logger = LoggerFactory.getLogger(this.getClass());
 			con = getConnection();
 			
 			con.setAutoCommit(false);
-			psmt = con.prepareStatement(Sql.DELETE_COMMENT);
+			PreparedStatement psmt1 = con.prepareStatement(Sql.DELETE_COMMENT);
 			PreparedStatement psmt2 = con.prepareStatement(Sql.UPDATE_ARTICLE_COMMENT_MINUS);
-			psmt.setString(1, no);
-			psmt.setString(2, parent);
+			psmt1.setString(1, no);
+			psmt1.setString(2, parent);
 			
-			result = psmt.executeUpdate();
+			psmt2.setString(1, parent);
+			
+			result = psmt1.executeUpdate();
 			psmt2.executeUpdate();
+			
 			con.commit();
 			
 			close();

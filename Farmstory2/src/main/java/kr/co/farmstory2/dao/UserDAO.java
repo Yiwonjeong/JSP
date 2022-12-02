@@ -217,7 +217,7 @@ public class UserDAO extends DBHelper{
 			}
 		}
 		// 자동 로그인 sessID DB 저장
-		public void updateUserForSession(String sessId, String uid) {
+		public void updateUserForSession(String uid, String sessId) {
 			try {
 				logger.info("updateUserForSession...");
 				con =  getConnection();

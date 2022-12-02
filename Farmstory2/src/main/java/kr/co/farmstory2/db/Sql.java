@@ -52,6 +52,7 @@ public class Sql {
 	/*** write ***/
 	// 게시글 작성
 	public static final String INSERT_ARTICLE = "insert into `board_article` set"
+												+ "`cate`=?,"
 												+ "`title`=?,"
 												+ "`content`=?,"
 												+ "`file`=?,"
@@ -155,7 +156,7 @@ public class Sql {
 												+ "WHERE `parent`=? ORDER BY `no` ASC";
 	
 	// 댓글 삭제
-	public static final String DELETE_COMMENT = "delete from `board_article` where `no`=?";
+	public static final String DELETE_COMMENT = "delete from `board_article` where `no`=? and `parent`=?";
 	public static final String UPDATE_ARTICLE_COMMENT_MINUS = "update `board_article` set `comment`=`comment`-1 where `no`=?";
 	
 	// 댓글 수정
