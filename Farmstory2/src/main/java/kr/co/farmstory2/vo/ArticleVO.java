@@ -15,7 +15,7 @@ public class ArticleVO {
 	private String uid;
 	private String regip;
 	private String rdate;
-	private int download;
+	
 	
 	// 추가 필드 
 	private String fname;
@@ -24,6 +24,7 @@ public class ArticleVO {
 	private int pno;
 	private String newName;
 	private String oriName;
+	private int download;
 	
 	public String getFname() {
 		return fname;

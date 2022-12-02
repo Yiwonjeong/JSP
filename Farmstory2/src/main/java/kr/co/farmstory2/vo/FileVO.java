@@ -6,6 +6,7 @@ public class FileVO {
 	private String newName;
 	private String oriName;
 	private int download;
+	
 	public int getFno() {
 		return fno;
 	}

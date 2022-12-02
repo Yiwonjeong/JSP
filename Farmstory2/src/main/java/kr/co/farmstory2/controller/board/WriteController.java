@@ -63,14 +63,14 @@ public class WriteController extends HttpServlet{
 		vo.setRegip(regip);
 		
 		logger.info("fname: "+fname);
-		int parent = service.insertArticle(vo);
 		
+		int parent = service.insertArticle(vo);
 		
 		if(fname != null) {
 			// 파일명 수정
 			String newName = service.renameFile(fname, uid, savePath);
 			
-			logger.info("newName: "+newName);
+			logger.info("WriteController...insertFile...");
 			service.insertFile(parent, newName, fname);
 		}
 		

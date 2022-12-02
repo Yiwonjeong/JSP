@@ -1,7 +1,11 @@
 package kr.co.farmstory2.service;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +15,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +57,53 @@ public enum ArticleService {
 	public void updateArticleHit(String no) {
 		dao.updateArticleHit(no);
 	}
+	// 파일 다운로드 클릭
+	public FileVO selectFile(int no) {
+		return dao.selectFile(no);
+	}
 	// 파일 다운로드
-	// 파일 다운로드 수 +1
-	
+	public void downloadFile(HttpServletRequest req, HttpServletResponse resp, String directory, String newName, String oriName) {
+		logger.info("FileDownload...");
+		
+		// response 객체로 파일 스트림 작업
+		String savePath = req.getServletContext().getRealPath(directory);
+		
+		try {
+			// 파일 다운로드를 위한 response 헤더 수정
+			resp.reset();
+			resp.setContentType("application/octet-stream");
+			resp.setHeader("content-Disposition", "attacment; filename=\"" + URLEncoder.encode(oriName, "utf-8") + "\"");
+			
+			// response 객체로 파일 스트림 작업
+			File file = new File(savePath, newName);
+			
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+			BufferedOutputStream bos = new BufferedOutputStream(resp.getOutputStream());
+			
+			while(true){
+				
+				int data = bis.read();
+				
+				if(data == -1){
+					break;
+				}
+				bos.write(data);
+			}
+			
+			bos.flush();
+			bos.close();
+			bis.close();
+			
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		
+	}
+	// 파일 다운로드 +1
+	public void plusDownload(int no) {
+		dao.plusDownload(no);
+	}
 	
 	/*** delete ***/
 	// 게시글 삭제
@@ -175,10 +224,11 @@ public enum ArticleService {
 	
 	/*** 파일 업로드***/
 	public MultipartRequest uploadFile(HttpServletRequest req, String savePath) throws IOException {
-		int maxSize = 1024 *1024 * 10;
+		int maxSize = 1024 * 1024 * 10;
 		return new MultipartRequest(req, savePath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
 	}
 	
+	/*** 파일명 수정 ***/
 	public String renameFile(String fname, String uid, String savePath) {
 		
 		int i = fname.lastIndexOf(".");

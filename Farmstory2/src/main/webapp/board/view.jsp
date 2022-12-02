@@ -29,7 +29,7 @@
 		// 댓글 작성 
 		commentWrite();
 		
-		$('.btnCalcel').click(function (e) {
+		$('.btnCancel').click(function (e) {
 			e.preventDefault();
 			$('textarea[name=content]').val('');
 		})
@@ -40,21 +40,16 @@
     <section class="view">
         
         <table border="0">
-            <caption>글보기</caption>
+            <caption>글 보기</caption>
             <tr>
                 <th>제목</th>
                 <td><input type="text" name="title" value="${vo.title}" readonly/></td>
             </tr>
             <tr>
                 <th>파일</th>
-                <c:choose>
-                	<c:when test="${vo.file gt 1}">
-                		<td><a href="#">${vo.oriName}</a>&nbsp;<span>${vo.download}</span>회 다운로드</td>
-                	</c:when>
-                	<c:otherwise>
-                		<td></td>
-                	</c:otherwise>
-                </c:choose>
+                <c:if test="${vo.file == 1}">
+               		<td><a href="/Farmstory2/board/download.do?no=${vo.no}">${vo.oriName}</a>&nbsp;<span>(${vo.download}</span>회 다운로드)</td>
+                </c:if>	
             </tr>
             <tr>
                 <th>내용</th>
