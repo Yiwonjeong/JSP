@@ -26,17 +26,18 @@ public enum ArticleService {
 	//	ListController
 	// 현재 페이지 번호
 	public int getCurrentPage(String pg) {
-		
 		int currentPage = 1;
-		if(pg != null) {
-			currentPage = Integer.parseInt(pg);
+		
+		if(pg != null){
+			currentPage = Integer.parseInt(pg);	
 		}
+		
 		return currentPage;
 	}
 	
 	// 전체 게시물 개수
-	public int selectCountTotal() {
-		return dao.selectCountTotal();
+	public int selectCountTotal(String search) {
+		return dao.selectCountTotal(search);
 	}
 	
 	// 마지막 페이지 번호
@@ -52,26 +53,28 @@ public enum ArticleService {
 	
 	// 페이지 그룹 start, end 번호
 	public int[] getPageGroupNum(int currentPage, int lastPageNum) {
-		int currentPageGroup = (int) Math.ceil(currentPage/10.0);
+		int currentPageGroup = (int)Math.ceil(currentPage / 10.0);
 		int pageGroupStart = (currentPageGroup - 1) * 10 + 1;
 		int pageGroupEnd = currentPageGroup * 10;
 		
-		if(pageGroupEnd > lastPageNum) {
-			pageGroupEnd  = lastPageNum;
+		if(pageGroupEnd > lastPageNum){
+			pageGroupEnd = lastPageNum;
 		}
+		
 		int[] result = {pageGroupStart, pageGroupEnd};
+		
 		return result;
 	}
 	
 	// 페이지 시작번호
 	public int getPageStartNum(int total, int currentPage) {
-		int start = (currentPage - 1)*10;
+		int start = (currentPage - 1) * 10;
 		return total - start;
 	}
 
 	// 시작 인덱스
 	public int getStartNum(int currentPage) {
-		return (currentPage - 1)*10;
+		return (currentPage - 1) * 10;
 	}
 	
 	// 글 가져오기
@@ -79,6 +82,9 @@ public enum ArticleService {
 		return dao.selectArticles(limitStart);
 	}
 	
+	public List<ArticleVO> selectArticlesByKeyword(String keyword, int start){
+		return dao.selectArticlesByKeyword(keyword, start);
+	}
 	
 	// WriteController
 	// 파일 업로드

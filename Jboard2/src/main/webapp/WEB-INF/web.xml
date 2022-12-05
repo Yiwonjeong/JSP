@@ -10,6 +10,7 @@
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
   
+  
   <!-- 필터 설정 -->
   <filter>
   	<filter-name>SetCharacterEncodingFilter</filter-name>

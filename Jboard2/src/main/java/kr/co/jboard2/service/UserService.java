@@ -79,7 +79,7 @@ public enum UserService {
 		int code = ThreadLocalRandom.current().nextInt(100000, 1000000);
 		
 		// 기본정보
-		String sender = "chhak0503@gmail.com";
+		String sender = "monosnsv@gmail.com";
 		String password = "ubqyyhrbehqxvawu";
 		
 		String title = "Jboard2 인증코드 입니다.";

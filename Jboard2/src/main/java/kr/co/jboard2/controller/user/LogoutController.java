@@ -24,12 +24,13 @@ public class LogoutController extends HttpServlet{
 	}	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 1. 세션 가져오기
 		HttpSession sess = req.getSession();
 		UserVO sessUser = (UserVO) sess.getAttribute("sessUser");
 		String uid = sessUser.getUid();
 		
-		// 세션 해제
 		sess.removeAttribute("sessUser");
+		// 2. 세션 파기
 		sess.invalidate();
 		
 		// 쿠키 삭제

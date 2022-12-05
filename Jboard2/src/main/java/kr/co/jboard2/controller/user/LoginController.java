@@ -33,11 +33,11 @@ public class LoginController extends HttpServlet{
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String uid = req.getParameter("uid");
-		String pass = req.getParameter("pass");
-		String auto = req.getParameter("auto");
+		String uid = req.getParameter("uid");		//아이디
+		String pass = req.getParameter("pass");		//패스워드
+		String auto = req.getParameter("auto");		//자동로그인체크
 		
-		UserVO vo = service.selectUser(uid, pass);
+		UserVO vo = service.selectUser(uid, pass);	//로그인 정보와 일치하는 회원 정보 
 		
 		if(vo != null) {
 			// 회원이 맞을 경우
@@ -57,11 +57,11 @@ public class LoginController extends HttpServlet{
 				// sessId 데이터베이스 저장
 				service.updateUserForSession(uid, sessId);
 			}
-			resp.sendRedirect("/Jboard2/list.do");
+			resp.sendRedirect("/Jbaord2/index.do");
 			
 		}else {
 			//회원이 아닐 경우
-			resp.sendRedirect("/Jboard2/user/login.do?success=100");
+			resp.sendRedirect("/Jbaord2/user/login.do?success=100");
 		}
 	}
 }
