@@ -1,7 +1,9 @@
 package kr.co.farmstory2.controller.board;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,11 +32,17 @@ public class ListController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		logger.info("ListController...");
+		
 		String cate = req.getParameter("cate");
 		String group = req.getParameter("group");
 		String pg = req.getParameter("pg");
+		
+		// 검색 키워드 받기
+		// apple을 검색했을 때: list?searchType=title&search=apple
+		String searchType = req.getParameter("searchType");
 		String search = req.getParameter("search");
 		
+
 		// 현재 페이지 번호
 		int currentPage = service.getCurrentPage(pg);
 				
@@ -54,7 +62,7 @@ public class ListController extends HttpServlet {
 		// 시작 인덱스
 		int start = service.getStartNum(currentPage);
 		
-		// 글 가져오기
+		// 페이지 글 가져오기
 		List<ArticleVO> articles = null;
 		
 		if(search == null) {
@@ -75,6 +83,9 @@ public class ListController extends HttpServlet {
 		req.setAttribute("pageStartNum", pageStartNum+1);
 		req.setAttribute("search", search);
 		
+		req.setAttribute("searchType", req.getParameter("searchType"));
+		req.setAttribute("search", req.getParameter("search"));
+
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/board/list.jsp");
 		dispatcher.forward(req, resp);
 	}

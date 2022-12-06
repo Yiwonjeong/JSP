@@ -47,9 +47,15 @@
             </tr>
             <tr>
                 <th>파일</th>
-                <c:if test="${vo.file == 1}">
-               		<td><a href="/Farmstory2/board/download.do?no=${vo.no}">${vo.oriName}</a>&nbsp;<span>(${vo.download}</span>회 다운로드)</td>
-                </c:if>	
+                <c:choose>
+                	<c:when test="${vo.file == 1}">
+                		<td><a href="/Farmstory2/board/download.do?no=${vo.no}">${vo.oriName}</a>&nbsp;<span>(${vo.download}</span>회 다운로드)</td>
+                	</c:when>
+                	<c:otherwise>
+                		<td></td>
+                	</c:otherwise>
+                </c:choose>
+                
             </tr>
             <tr>
                 <th>내용</th>

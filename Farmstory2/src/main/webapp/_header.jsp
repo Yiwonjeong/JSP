@@ -26,7 +26,6 @@
     </script>
 
 </head>
-<body>
     <div id="wrapper">
         <header>
             <a href="/Farmstory2/index.do" class="logo"><img src="/Farmstory2/img/logo.png" alt="로고"/></a>
@@ -39,6 +38,7 @@
                 	</c:when>
                 	<c:otherwise>
                 		<a href="/Farmstory2/user/logout.do">로그아웃 |</a>
+                		<a href="#">마이페이지 |</a>
                 	</c:otherwise>
                 </c:choose>
                 <a href="#">고객센터</a>

@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+
 <jsp:include page="../_header.jsp"/>
 <jsp:include page="./_${group}.jsp"/>
 <main id="board">
     <section class="write">
-
         <form action="/Farmstory2/board/write.do" method="post" enctype="multipart/form-data">
         <input type="hidden" name="uid" value="${sessUser.uid}"/>
         <input type="hidden" name="group" value="${group}"/>
@@ -17,7 +17,7 @@
                 <tr>
                     <th>내용</th>
                     <td>
-                        <textarea name="content" placeholder="내용을 입력하세요."></textarea>
+                    	<textarea name="content" placeholder="내용을 입력하세요."></textarea>
                     </td>
                 </tr>
                 <tr>

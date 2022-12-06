@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.co.jboard2.service.UserService;
 import kr.co.jboard2.vo.UserVO;
 
@@ -19,12 +22,16 @@ public class LoginController extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 	private UserService service = UserService.INSTANCE;
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
 	public void init() throws ServletException {
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		logger.info("LoginController doGet...");
+		
 		String success = req.getParameter("success");
 		req.setAttribute("success", success);
 		
@@ -33,9 +40,12 @@ public class LoginController extends HttpServlet{
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		logger.info("LoginController doPost...");
+		
 		String uid = req.getParameter("uid");		//아이디
 		String pass = req.getParameter("pass");		//패스워드
-		String auto = req.getParameter("auto");		//자동로그인체크
+		String auto = req.getParameter("auto");		//자동 로그인 체크
 		
 		UserVO vo = service.selectUser(uid, pass);	//로그인 정보와 일치하는 회원 정보 
 		
@@ -43,6 +53,8 @@ public class LoginController extends HttpServlet{
 			// 회원이 맞을 경우
 			HttpSession sess = req.getSession();
 			sess.setAttribute("sessUser", vo);
+			
+			System.out.println("LoginController - 로그인 성공");
 			
 			// 자동 로그인 체크 시 
 			if(auto != null) {
@@ -57,7 +69,7 @@ public class LoginController extends HttpServlet{
 				// sessId 데이터베이스 저장
 				service.updateUserForSession(uid, sessId);
 			}
-			resp.sendRedirect("/Jbaord2/index.do");
+			resp.sendRedirect("/Jboard2/list.do");
 			
 		}else {
 			//회원이 아닐 경우

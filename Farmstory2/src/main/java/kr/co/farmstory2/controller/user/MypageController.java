@@ -1,6 +1,5 @@
 package kr.co.farmstory2.controller.user;
 
-import java.io.Console;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -9,46 +8,57 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.farmstory2.service.UserService;
 import kr.co.farmstory2.vo.UserVO;
 
-@WebServlet("/user/findIdResult.do")
-public class FindIdResultController extends HttpServlet {
+@WebServlet("/user/myPage.do")
+public class MypageController extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
-	private UserService service = UserService.INSTANCE; 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Override
 	public void init() throws ServletException {
 	}
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		logger.info("FindIdResultController doGet...");
 		
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/findIdResult.jsp");
+		logger.info("MypageController doGet...");
+		
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/myPage.jsp");
 		dispatcher.forward(req, resp);
-	}
 	
+	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		logger.info("FindIdResultController doPost...");
 	
-		
-		String email = req.getParameter("email");
+		// 데이터 수신
+		String uid = req.getParameter("uid");
+		String pass = req.getParameter("pass");
 		String name = req.getParameter("name");
+		String nick = req.getParameter("nick");
+		String email = req.getParameter("email");
+		String hp = req.getParameter("hp");
+		String zip = req.getParameter("zip");
+		String addr1 = req.getParameter("addr1");
+		String addr2 = req.getParameter("addr2");
+		String regip = req.getRemoteAddr();
 		
-		UserVO vo = service.selectUserForFindId(name, email);
-		req.setAttribute("sessUserForId", vo);
-		
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/findIdResult.jsp");
-		dispatcher.forward(req, resp);
+		// VO 데이터 생성
+		UserVO vo = new UserVO();
+		vo.setUid(uid);
+		vo.setPass(pass);
+		vo.setName(name);
+		vo.setNick(nick);
+		vo.setEmail(email);
+		vo.setHp(hp);
+		vo.setZip(zip);
+		vo.setAddr1(addr1);
+		vo.setAddr2(addr2);
+		vo.setRegip(regip);
 	}
+	
 }

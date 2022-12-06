@@ -48,6 +48,8 @@ public enum ArticleService {
 	public void insertFile(int parent, String newName, String fname) {
 		dao.insertFile(parent, newName, fname);
 	}
+
+
 	/*** view ***/
 	// 게시글 조회
 	public ArticleVO selectArticle(String no, String cate) {
@@ -107,17 +109,28 @@ public enum ArticleService {
 	
 	/*** delete ***/
 	// 게시글 삭제
-	public void deleteArticle(String no) {
-		dao.deleteArticle(no);
+//	public void deleteArticle(String no) {
+//		dao.deleteArticle(no);
+//	}
+	/*** 조건에 해당하는 게시판 및 관련 파일, 댓글을 삭제하는 서비스 ***/
+	public Map<String, Object> deleteArticle(int no) {
+		return dao.deleteArticle(no);
 	}
-	// 파일 삭제
 	
+	// 파일 삭제
+	public void deleteFile(HttpServletRequest req, String directory, String newName) {
+		logger.info("deleteFile...");
+		String sDirectory = req.getServletContext().getRealPath(directory);
+		File file = new File(sDirectory, newName);
+		if(file.exists()) file.delete();
+	}
 	
 	/*** update ***/
 	// 게시글 수정
 	public void updateArticle(String title, String content, String no) {
 		dao.updateArticle(title, content, no);
 	}
+	
 	
 	
 	/*** index ***/
@@ -161,7 +174,7 @@ public enum ArticleService {
 		return dao.updateComment(no, content);
 	}
 	
-	
+
 	/*** page ***/
 	// 마지막 페이지 번호 계산
 	public int getLastPageNum(int total) {
@@ -217,6 +230,9 @@ public enum ArticleService {
 		return (currentPage - 1)*10;
 	}
 	
+
+	
+	/*** 파일 첨부 ***/
 	public String getSavePath(HttpServletRequest req) {
 		ServletContext application = req.getServletContext();
 		return application.getRealPath("/file");
@@ -224,22 +240,22 @@ public enum ArticleService {
 	
 	/*** 파일 업로드***/
 	public MultipartRequest uploadFile(HttpServletRequest req, String savePath) throws IOException {
-		int maxSize = 1024 * 1024 * 10;
+		int maxSize = 1024 * 1024 * 10; //10MB
 		return new MultipartRequest(req, savePath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
 	}
 	
 	/*** 파일명 수정 ***/
 	public String renameFile(String fname, String uid, String savePath) {
 		
-		int i = fname.lastIndexOf(".");
-		String ext = fname.substring(i);
+		int i = fname.lastIndexOf(".");		//.txt 의 인덱스 번호 가져오기 
+		String ext = fname.substring(i);	//.txt를 문자열로 저장
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss_");
 		String now = sdf.format(new Date());
 		String newName = now+uid+ext;
 		
-		File f1 = new File(savePath+"/"+fname);
-		File f2 = new File(savePath+"/"+newName);
+		File f1 = new File(savePath+"/"+fname);		// file 디렉터리안에 존재하는 객체
+		File f2 = new File(savePath+"/"+newName);	// 가상의 파일 객체
 		
 		f1.renameTo(f2);
 		

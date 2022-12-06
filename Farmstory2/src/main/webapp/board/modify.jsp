@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../_header.jsp"/>
 <jsp:include page="./_${group}.jsp"/>
+
 <main id="board">
     <section class="modify">
-
         <form action="/Farmstory2/board/modify.do" method="post">
         <input type="hidden" name="no" value="${no}">
     	<input type="hidden" name="pg" value="${pg}">
@@ -25,14 +25,15 @@
                 <tr>
                     <th>파일</th>
                     <td>
-                    <c:choose>
-                    <c:when test="${empty fname}">
-                       선택된 파일이 없습니다.
-                    </c:when>
-                    <c:otherwise>
-                    	 <input type="file" name="fname"/>
-                    </c:otherwise>
-                    </c:choose>
+                    	<c:choose>
+	                    <c:when test="${empty fname}">
+	                       선택된 파일이 없습니다.
+	                    </c:when>
+	                    <c:otherwise>
+	                    	 <input type="file" name="fname"/>
+	                    </c:otherwise>
+	                    </c:choose>
+                    	<button type="button" class="btn btnDelete">삭제</button>
                     </td>
                 </tr>
             </table>

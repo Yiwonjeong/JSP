@@ -1,6 +1,10 @@
 package kr.co.farmstory2.controller.board;
 
+import java.io.Console;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,20 +13,31 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.oreilly.servlet.MultipartRequest;
+
 import kr.co.farmstory2.service.ArticleService;
 import kr.co.farmstory2.vo.ArticleVO;
+import kr.co.farmstory2.vo.FileVO;
+import kr.co.farmstory2.vo.UserVO;
 
 @WebServlet("/board/modify.do")
 public class ModifyController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private ArticleService service = ArticleService.INSTANCE;
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
 	public void init() throws ServletException {
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		logger.info("ModifyController doGet...");
+		
 		String cate = req.getParameter("cate");
 		String group = req.getParameter("group");
 		String no = req.getParameter("no");
@@ -42,6 +57,9 @@ public class ModifyController extends HttpServlet {
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		logger.info("ModifyController doPost...");
+		
 		String no = req.getParameter("no");
 		String cate = req.getParameter("cate");
 		String group = req.getParameter("group");
@@ -52,6 +70,7 @@ public class ModifyController extends HttpServlet {
 		
 		service.updateArticle(title, content, no);
 		
-		resp.sendRedirect("/Farmstory2/board/view.do?group="+group+"&cate="+cate+"&no="+no+"&pg="+pg);
+		resp.sendRedirect("/Farmstory2/board/view.do?group="+group+"&cate="+cate+"&no="+no+"&pg="+pg);		
+		
 	}
 }

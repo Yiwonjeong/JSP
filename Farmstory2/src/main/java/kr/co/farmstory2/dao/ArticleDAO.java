@@ -21,6 +21,7 @@ public class ArticleDAO extends DBHelper {
 	
 Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+
 	/*** write ***/
 	// 게시글 작성
 	public int insertArticle(ArticleVO article) {
@@ -73,6 +74,9 @@ Logger logger = LoggerFactory.getLogger(this.getClass());
 			logger.error(e.getMessage());
 		}
 	}
+	
+	
+	
 	
 	
 	/*** view ***/
@@ -177,22 +181,63 @@ Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	/*** delete ***/
 	// 게시글 삭제
-	public void deleteArticle(String no) {
+//	public void deleteArticle(String no) {
+//		
+//		try {
+//			logger.info("deleteArticle...");
+//			
+//			con = getConnection();
+//			con.setAutoCommit(false);
+//			
+//			psmt = con.prepareStatement(Sql.DELETE_ARTICLE);
+//			psmt.setString(1, no);
+//			psmt.setString(2, no);
+//			
+//			psmt.executeUpdate();
+//			close();
+//		}catch(Exception e) {
+//			logger.error(e.getMessage());
+//		}
+//	}
+	/*** 조건에 해당하는 게시판 및 관련 파일, 댓글을 삭제하는 메서드 ***/
+	public Map<String, Object> deleteArticle(int no) {
+		Map<String, Object> map = null;
+ 		int result = 0;
+ 		String newName = null;
+ 		
 		try {
 			logger.info("deleteArticle...");
 			
 			con = getConnection();
+			con.setAutoCommit(false);
 			
+			PreparedStatement selectPsmt = con.prepareStatement(Sql.SELECT_FILE);
+			selectPsmt.setInt(1, no);
+			
+			rs = selectPsmt.executeQuery();
+			if(rs.next()) {
+				newName = rs.getString("newName");
+			}
+				
 			psmt = con.prepareStatement(Sql.DELETE_ARTICLE);
-			psmt.setString(1, no);
-			psmt.setString(2, no);
+			psmt.setInt(1, no);
+			psmt.setInt(2, no);
 			
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
+			
+			con.commit();
+			
+			map = new HashMap<>();
+			map.put("newName", newName);
+			map.put("result", result);
+			
 			close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
-	}
+		logger.debug("map : " + map);
+		return map;
+	};
 	
 	
 	/*** update ***/
@@ -216,6 +261,8 @@ Logger logger = LoggerFactory.getLogger(this.getClass());
 		}
 		
 	}
+	
+	
 	
 	/*** index ***/
 	// 게시글 조회
@@ -252,6 +299,8 @@ Logger logger = LoggerFactory.getLogger(this.getClass());
 		}
 		return articles;
 	}
+	
+	// 검색 -> 게시글 조회
 	public List<ArticleVO> selectArticlesByKeyword(String keyword, int start) {
 		
 		List<ArticleVO> articles = new ArrayList<>();
@@ -260,9 +309,9 @@ Logger logger = LoggerFactory.getLogger(this.getClass());
 			
 			con = getConnection();
 			psmt = con.prepareStatement(Sql.SELECT_ARTICLES_BY_KEYWORD);
-			psmt.setString(1, "%"+keyword+"%");
-			psmt.setString(2, "%"+keyword+"%");
-			psmt.setInt(3, start);
+			psmt.setString(1, "%"+keyword+"%");		// title
+			psmt.setString(2, "%"+keyword+"%");		// nick
+			psmt.setInt(3, start);					// limit start
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 				ArticleVO article = new ArticleVO();

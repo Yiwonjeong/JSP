@@ -1,5 +1,6 @@
 package kr.co.farmstory2.controller.board;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,13 +68,16 @@ public class WriteController extends HttpServlet{
 		
 		int parent = service.insertArticle(vo);
 		
+		/*** 파일 첨부 ***/
 		if(fname != null) {
 			// 파일명 수정
 			String newName = service.renameFile(fname, uid, savePath);
 			
 			logger.info("WriteController...insertFile...");
-			service.insertFile(parent, newName, fname);
+			service.insertFile(parent, newName, fname);	//파일 테이블 Insert
 		}
+		
+	
 		
 		resp.sendRedirect("/Farmstory2/board/list.do?group="+group+"&cate="+cate);
 	}

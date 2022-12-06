@@ -65,7 +65,7 @@ public class Sql {
 										   + "`parent`=?,"
 										   + "`newName`=?,"
 										   + "`oriName`=?";
-	
+
 	
 	
 	/*** view ***/
@@ -88,7 +88,9 @@ public class Sql {
 	
 	/*** delete ***/
 	// 게시글 삭제
-	public static final String DELETE_ARTICLE = "delete from `board_article` where `no`=? or `parent`=?";
+//	public static final String DELETE_ARTICLE = "delete from `board_article` where `no`=? or `parent`=?";
+	public static final String DELETE_ARTICLE = "DELETE a.*, f.* FROM `board_article` a LEFT JOIN `board_file` f "
+											  + "ON a.`no` = f.`parent` WHERE a.`no` = ? OR a.`parent`=? ";
 	
 	// 파일 삭제
 	public static final String DELETE_FILE = "delete from `board_file` where `parent`=?";
@@ -100,6 +102,9 @@ public class Sql {
 												+"`content`=?, "
 												+"`rdate`=NOW() "
 												+"where `no`=?";
+	
+	
+	
 	public static final String SELECT_MODIFY_ARTICLE = "select * from `board_article` where `no`=?";
 	/*** index ***/
 	// 게시글 조회
@@ -109,12 +114,12 @@ public class Sql {
 											   + "WHERE `parent`= 0 and `cate`=? "
 											   + "ORDER BY `no` DESC "
 											   + "LIMIT ?, 10";
-	
+	// 검색 -> 게시글 조회
 	public static final String SELECT_ARTICLES_BY_KEYWORD = "SELECT a.*, b.nick FROM `board_article` AS a "
-			+ "JOIN `board_user` AS b ON a.uid = b.uid "
-			+ "WHERE `parent`=0 AND (`title` LIKE ? OR `nick` LIKE ?)"
-			+ "ORDER BY `no` desc "
-			+ "LIMIT ?, 10";
+															+ "JOIN `board_user` AS b ON a.uid = b.uid "
+															+ "WHERE `parent`=0 AND (`title` LIKE ? OR `nick` LIKE ?) "
+															+ "ORDER BY `no` desc "
+															+ "LIMIT ?, 10";
 	
 	// 우측 하단 tabs
 	public static final String SELECT_LATEST = "SELECT `no`,`title`,`rdate` FROM `board_article` WHERE `cate`=? ORDER BY `no` DESC LIMIT 3";
