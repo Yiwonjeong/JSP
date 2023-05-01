@@ -44,8 +44,11 @@
 	- Servlet
 	- Filter
 
-## Ch09. 간단 회
+## Ch09. 간단 회원관리
 
-## Jboard1 
+## Jboard, FarmStory
 	- 게시판 만들기 프로젝트 
+
+## Shop
+	- SQL 응용 실습 
 	
