@@ -39,6 +39,10 @@
 ## Ch07. JSP 표현 언어
 	- MVC 패턴에 따라 JSP를 효율적으로 처리하기 위한 출력 문법 
 	- JSP 내장 객체를 이용해 표현 언어로 출력 
+	
+## Ch08. JSP Servlet
+	- Servlet
+	- Filter
 
 ## Jboard1 
 	- 게시판 만들기 프로젝트 
